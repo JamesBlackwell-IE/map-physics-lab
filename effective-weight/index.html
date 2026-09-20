@@ -1,1 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Effective Weight in a Lift | MAP Physics Lab</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #202124;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 20px 50px;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    margin: 0 0 28px;
+    color: #666;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .panel {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    padding: 20px;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .mass-value {
+    margin-top: 5px;
+    color: #666;
+  }
+
+  .scenario-title {
+    margin-top: 25px;
+    font-weight: 600;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: 10px;
+  }
+
+  button {
+    border: 1px solid #bbb;
+    background: white;
+    padding: 12px 8px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #f2f2f2;
+  }
+
+  button.active {
+    background: #e8eef8;
+    border-color: #5676a5;
+    font-weight: 600;
+  }
+
+  .reading {
+    margin-top: 22px;
+    padding: 18px;
+    border-radius: 12px;
+    background: #f5f6f8;
+  }
+
+  .reading-label {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .reading-number {
+    margin-top: 3px;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .feel {
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .explanation {
+    margin-top: 16px;
+    line-height: 1.5;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .diagram {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    padding: 12px;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .relationship {
+    margin-top: 14px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .relationship-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: baseline;
+  }
+
+  .relationship-title {
+    font-weight: 600;
+  }
+
+  .formula {
+    font-size: 1.25rem;
+  }
+
+  #calcText {
+    margin-top: 8px;
+    color: #666;
+  }
+
+  .note {
+    margin-top: 25px;
+    color: #777;
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 800px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 450px) {
+    .buttons {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <a class="back" href="../">← MAP Physics Lab</a>
+
+  <h1>Effective Weight in a Lift</h1>
+
+  <p class="subtitle">
+    Explore how lift acceleration changes the normal force and apparent weight.
+  </p>
+
+  <div class="layout">
+
+    <!-- CONTROLS -->
+    <section class="panel">
+
+      <label for="mass">Person's mass</label>
+
+      <input
+        id="mass"
+        type="range"
+        min="40"
+        max="120"
+        value="70"
+        step="1">
+
+      <div class="mass-value">
+        <span id="massOut">70</span> kg
+      </div>
+
+      <div class="scenario-title">
+        Choose a lift situation
+      </div>
+
+      <div class="buttons">
+
+        <button type="button" data-mode="constant">
+          Constant velocity
+        </button>
+
+        <button type="button" data-mode="up">
+          Accelerating up
+        </button>
+
+        <button type="button" data-mode="down">
+          Accelerating down
+        </button>
+
+        <button type="button" data-mode="freefall">
+          Free fall
+        </button>
+
+      </div>
+
+      <div class="reading">
+
+        <div class="reading-label">
+          Scale reading = effective weight
+        </div>
+
+        <div id="reading" class="reading-number">
+          700 N
+        </div>
+
+        <div id="feel" class="feel">
+          Feels normal
+        </div>
+
+      </div>
+
+      <div id="explanation" class="explanation">
+        At constant velocity, acceleration is zero.
+        The scale reading equals the person's gravitational weight.
+      </div>
+
+    </section>
+
+    <!-- DIAGRAM -->
+    <section>
+
+      <div class="diagram">
+
+        <svg viewBox="0 0 540 410"
+             role="img"
+             aria-label="Lift showing weight, normal force, gravitational acceleration, lift acceleration and effective gravity">
+
+          <!-- LIFT -->
+          <rect
+            x="70" y="30"
+            width="270" height="330"
+            rx="11"
+            fill="none"
+            stroke="#888"
+            stroke-width="4"/>
+
+          <line
+            x1="70" y1="360"
+            x2="340" y2="360"
+            stroke="#333"
+            stroke-width="5"/>
+
+          <text
+            x="205" y="61"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600">
+            Forces on person
+          </text>
+
+          <!-- SCALE -->
+          <rect
+            x="160" y="322"
+            width="90" height="18"
+            rx="4"
+            fill="#bfc5cc"/>
+
+          <text
+            x="205" y="352"
+            text-anchor="middle"
+            font-size="12"
+            fill="#666">
+            scale
+          </text>
+
+          <!-- PERSON -->
+          <circle
+            cx="205" cy="183"
+            r="25"
+            fill="#6f83a6"/>
+
+          <line
+            x1="205" y1="208"
+            x2="205" y2="277"
+            stroke="#6f83a6"
+            stroke-width="12"
+            stroke-linecap="round"/>
+
+          <line
+            x1="205" y1="229"
+            x2="174" y2="254"
+            stroke="#6f83a6"
+            stroke-width="10"
+            stroke-linecap="round"/>
+
+          <line
+            x1="205" y1="229"
+            x2="236" y2="254"
+            stroke="#6f83a6"
+            stroke-width="10"
+            stroke-linecap="round"/>
+
+          <line
+            x1="205" y1="277"
+            x2="187" y2="322"
+            stroke="#6f83a6"
+            stroke-width="10"
+            stroke-linecap="round"/>
+
+          <line
+            x1="205" y1="277"
+            x2="223" y2="322"
+            stroke="#6f83a6"
+            stroke-width="10"
+            stroke-linecap="round"/>
+
+          <!-- WEIGHT -->
+          <text
+            id="mgLabel"
+            x="116" y="187"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600">
+            mg = 700 N
+          </text>
+
+          <line
+            x1="116" y1="205"
+            x2="116" y2="292"
+            stroke="#8b5a9f"
+            stroke-width="5"/>
+
+          <polygon
+            points="116,306 107,288 125,288"
+            fill="#8b5a9f"/>
+
+          <!-- NORMAL FORCE -->
+          <line
+            id="nArrow"
+            x1="292" y1="305"
+            x2="292" y2="218"
+            stroke="#3b8c79"
+            stroke-width="5"/>
+
+          <polygon
+            id="nHead"
+            points="292,205 283,223 301,223"
+            fill="#3b8c79"/>
+
+          <text
+            id="nLabel"
+            x="292" y="331"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600">
+            N = 700 N
+          </text>
+
+          <!-- DIVIDER -->
+          <line
+            x1="365" y1="48"
+            x2="365" y2="350"
+            stroke="#ccc"
+            stroke-width="1.5"/>
+
+          <!-- ACCELERATIONS -->
+          <text
+            x="452" y="61"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600">
+            Accelerations
+          </text>
+
+          <!-- g -->
+          <text
+            x="397" y="94"
+            text-anchor="middle"
+            font-size="16"
+            font-weight="600">
+            g
+          </text>
+
+          <line
+            x1="397" y1="113"
+            x2="397" y2="164"
+            stroke="#8b5a9f"
+            stroke-width="4"/>
+
+          <polygon
+            points="397,176 389,160 405,160"
+            fill="#8b5a9f"/>
+
+          <text
+            x="397" y="202"
+            text-anchor="middle"
+            font-size="13">
+            10
+          </text>
+
+          <!-- a -->
+          <text
+            x="452" y="94"
+            text-anchor="middle"
+            font-size="16"
+            font-weight="600">
+            a
+          </text>
+
+          <line
+            id="aArrow"
+            x1="452" y1="145"
+            x2="452" y2="145"
+            stroke="#d39c35"
+            stroke-width="4"/>
+
+          <polygon
+            id="aHead"
+            points="452,145 452,145 452,145"
+            fill="#d39c35"/>
+
+          <text
+            id="aValue"
+            x="452" y="202"
+            text-anchor="middle"
+            font-size="13">
+            0
+          </text>
+
+          <!-- g prime -->
+          <text
+            x="507" y="94"
+            text-anchor="middle"
+            font-size="16"
+            font-weight="600">
+            g′
+          </text>
+
+          <line
+            id="gpArrow"
+            x1="507" y1="113"
+            x2="507" y2="164"
+            stroke="#3b8c79"
+            stroke-width="5"/>
+
+          <polygon
+            id="gpHead"
+            points="507,176 499,160 515,160"
+            fill="#3b8c79"/>
+
+          <text
+            id="gpValue"
+            x="507" y="202"
+            text-anchor="middle"
+            font-size="13">
+            10
+          </text>
+
+          <text
+            x="452" y="246"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600">
+            g′ = g + a
+          </text>
+
+          <text
+            x="452" y="266"
+            text-anchor="middle"
+            font-size="11"
+            fill="#666">
+            values in m/s²
+          </text>
+
+        </svg>
+
+      </div>
+
+      <div class="relationship">
+
+        <div class="relationship-top">
+
+          <span class="relationship-title">
+            Key relationship
+          </span>
+
+          <span class="formula">
+            N = mg′
+          </span>
+
+        </div>
+
+        <div id="calcText">
+          g′ = 10 m/s² → N = 70 × 10 = 700 N
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="note">
+    This simulation uses g = 10 m/s² to simplify the calculations.
+  </div>
+
+</div>
+
+<script>
+(() => {
+
+  const g = 10;
+
+  const mass = document.getElementById("mass");
+  const massOut = document.getElementById("massOut");
+
+  const reading = document.getElementById("reading");
+  const feel = document.getElementById("feel");
+  const explanation = document.getElementById("explanation");
+
+  const mgLabel = document.getElementById("mgLabel");
+
+  const nArrow = document.getElementById("nArrow");
+  const nHead = document.getElementById("nHead");
+  const nLabel = document.getElementById("nLabel");
+
+  const aArrow = document.getElementById("aArrow");
+  const aHead = document.getElementById("aHead");
+  const aValue = document.getElementById("aValue");
+
+  const gpArrow = document.getElementById("gpArrow");
+  const gpHead = document.getElementById("gpHead");
+  const gpValue = document.getElementById("gpValue");
+
+  const calcText = document.getElementById("calcText");
+
+  const buttons =
+    [...document.querySelectorAll("[data-mode]")];
+
+  let mode = "constant";
+
+  const modes = {
+
+    constant: {
+      a: 0,
+      feel: "Feels normal",
+      text:
+        "At constant velocity, acceleration is zero. " +
+        "The scale reading equals the person's gravitational weight."
+    },
+
+    up: {
+      a: 5,
+      feel: "Feels heavier",
+      text:
+        "The lift accelerates upward. Effective gravity increases, " +
+        "so the scale exerts a larger normal force."
+    },
+
+    down: {
+      a: -5,
+      feel: "Feels lighter",
+      text:
+        "The lift accelerates downward. Effective gravity decreases, " +
+        "so the scale exerts a smaller normal force."
+    },
+
+    freefall: {
+      a: -10,
+      feel: "Weightless",
+      text:
+        "In free fall, the lift and person accelerate downward together " +
+        "at g. Effective gravity and the scale reading are zero."
+    }
+
+  };
+
+  function setArrow(line, head, x, direction, length) {
+
+    if (length < 2) {
+
+      line.setAttribute("y1", "145");
+      line.setAttribute("y2", "145");
+
+      head.setAttribute(
+        "points",
+        `${x},145 ${x},145 ${x},145`
+      );
+
+      return;
+    }
+
+    if (direction === "up") {
+
+      const y1 = 172;
+      const y2 = y1 - length;
+
+      line.setAttribute("y1", y1);
+      line.setAttribute("y2", y2);
+
+      head.setAttribute(
+        "points",
+        `${x},${y2 - 9} ${x - 7},${y2 + 5} ${x + 7},${y2 + 5}`
+      );
+
+    } else {
+
+      const y1 = 113;
+      const y2 = y1 + length;
+
+      line.setAttribute("y1", y1);
+      line.setAttribute("y2", y2);
+
+      head.setAttribute(
+        "points",
+        `${x},${y2 + 9} ${x - 7},${y2 - 5} ${x + 7},${y2 - 5}`
+      );
+
+    }
+  }
+
+  function update() {
+
+    const m = Number(mass.value);
+
+    const state = modes[mode];
+
+    const weight = m * g;
+
+    const gPrime =
+      Math.max(0, g + state.a);
+
+    const normal =
+      m * gPrime;
+
+    massOut.textContent =
+      m.toFixed(0);
+
+    reading.textContent =
+      normal.toFixed(0) + " N";
+
+    feel.textContent =
+      state.feel;
+
+    explanation.textContent =
+      state.text;
+
+    mgLabel.textContent =
+      "mg = " + weight.toFixed(0) + " N";
+
+    nLabel.textContent =
+      "N = " + normal.toFixed(0) + " N";
+
+    aValue.textContent =
+      state.a > 0
+        ? "+" + state.a
+        : state.a.toFixed(0);
+
+    gpValue.textContent =
+      gPrime.toFixed(0);
+
+    calcText.textContent =
+      `g′ = ${gPrime.toFixed(0)} m/s² → ` +
+      `N = ${m.toFixed(0)} × ${gPrime.toFixed(0)} ` +
+      `= ${normal.toFixed(0)} N`;
+
+    /* Normal force arrow */
+
+    const nLength =
+      weight > 0
+        ? Math.min(
+            130,
+            87 * normal / weight
+          )
+        : 0;
+
+    const nEnd =
+      305 - nLength;
+
+    nArrow.setAttribute(
+      "y1",
+      "305"
+    );
+
+    nArrow.setAttribute(
+      "y2",
+      nEnd.toFixed(1)
+    );
+
+    if (nLength > 2) {
+
+      nHead.setAttribute(
+        "points",
+        `292,${(nEnd - 13).toFixed(1)} ` +
+        `283,${(nEnd + 5).toFixed(1)} ` +
+        `301,${(nEnd + 5).toFixed(1)}`
+      );
+
+      nArrow.style.opacity = "1";
+      nHead.style.opacity = "1";
+
+    } else {
+
+      nHead.setAttribute(
+        "points",
+        "292,305 292,305 292,305"
+      );
+
+      nArrow.style.opacity = "0.15";
+      nHead.style.opacity = "0";
+    }
+
+    /* Lift acceleration */
+
+    if (state.a > 0) {
+
+      setArrow(
+        aArrow,
+        aHead,
+        452,
+        "up",
+        32
+      );
+
+    } else if (state.a < 0) {
+
+      setArrow(
+        aArrow,
+        aHead,
+        452,
+        "down",
+        Math.abs(state.a) === 10
+          ? 55
+          : 32
+      );
+
+    } else {
+
+      setArrow(
+        aArrow,
+        aHead,
+        452,
+        "down",
+        0
+      );
+    }
+
+    /* Effective gravity */
+
+    const gpLength =
+      gPrime === 0
+        ? 0
+        : Math.min(
+            66,
+            42 * gPrime / g
+          );
+
+    setArrow(
+      gpArrow,
+      gpHead,
+      507,
+      "down",
+      gpLength
+    );
+
+    if (gPrime === 0) {
+
+      gpArrow.style.opacity = "0.15";
+      gpHead.style.opacity = "0";
+
+    } else {
+
+      gpArrow.style.opacity = "1";
+      gpHead.style.opacity = "1";
+    }
+
+    /* Active button */
+
+    buttons.forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.mode === mode
+      );
+
+    });
+
+  }
+
+  buttons.forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        mode =
+          button.dataset.mode;
+
+        update();
+      }
+    );
+
+  });
+
+  mass.addEventListener(
+    "input",
+    update
+  );
+
+  update();
+
+})();
+</script>
+
+</body>
+</html>
