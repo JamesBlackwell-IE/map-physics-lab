@@ -1,85 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAP Physics Lab</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      line-height: 1.6;
-      color: #222;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MAP Physics Lab | James Blackwell</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --navy: #18324a;
+    --blue: #315f86;
+    --light-blue: #eef4f8;
+    --text: #20262c;
+    --muted: #66717a;
+    --border: #d9e0e5;
+    --background: #f7f9fa;
+    --white: #ffffff;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 50px 22px 60px;
+  }
+
+  .hero {
+    margin-bottom: 42px;
+  }
+
+  .eyebrow {
+    color: var(--blue);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 9px;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--navy);
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    line-height: 1.05;
+  }
+
+  .intro {
+    max-width: 700px;
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+
+  .section-title {
+    margin: 0 0 18px;
+    color: var(--navy);
+    font-size: 1.35rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    min-height: 235px;
+    padding: 24px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .card.active {
+    border-top: 4px solid var(--blue);
+  }
+
+  .tag {
+    width: fit-content;
+    margin-bottom: 14px;
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: var(--light-blue);
+    color: var(--blue);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .tag.future {
+    background: #f1f2f3;
+    color: #767d83;
+  }
+
+  .card h2 {
+    margin: 0 0 10px;
+    color: var(--navy);
+    font-size: 1.25rem;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .card-bottom {
+    margin-top: auto;
+    padding-top: 22px;
+  }
+
+  .launch {
+    display: inline-block;
+    padding: 10px 16px;
+    background: var(--navy);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .launch:hover,
+  .launch:focus {
+    background: var(--blue);
+  }
+
+  .coming {
+    color: #8a9298;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .about {
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .about p {
+    max-width: 760px;
+    color: var(--muted);
+  }
+
+  footer {
+    margin-top: 45px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: #7a838a;
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 700px) {
+    .page {
+      padding-top: 34px;
     }
 
-    h1 {
-      margin-bottom: 0.2em;
-    }
-
-    .subtitle {
-      color: #666;
-      margin-bottom: 2rem;
+    .grid {
+      grid-template-columns: 1fr;
     }
 
     .card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 22px;
-      margin-top: 20px;
+      min-height: auto;
     }
-
-    .card h2 {
-      margin-top: 0;
-    }
-
-    a.button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
-      background: #222;
-      color: white;
-      text-decoration: none;
-      border-radius: 7px;
-    }
-
-    a.button:hover {
-      background: #444;
-    }
-
-    footer {
-      margin-top: 50px;
-      color: #777;
-      font-size: 0.9rem;
-    }
-  </style>
+  }
+</style>
 </head>
 
 <body>
 
-  <h1>MAP Physics Lab</h1>
+<main class="page">
 
-  <p class="subtitle">
-    Interactive physics simulations for Medical Applications of Physics.
-  </p>
+  <header class="hero">
 
-  <div class="card">
-    <h2>Effective Weight in a Lift</h2>
+    <div class="eyebrow">
+      Medical Applications of Physics
+    </div>
 
-    <p>
-      Explore how acceleration changes apparent weight and the force measured
-      by a weighing scale inside a lift.
+    <h1>
+      MAP Physics Lab
+    </h1>
+
+    <p class="intro">
+      Interactive simulations designed to help students explore
+      key physics concepts through simple visual models and
+      clinically relevant examples.
     </p>
 
-    <a class="button" href="effective-weight/">
-      Launch simulator
-    </a>
-  </div>
+  </header>
+
+  <section>
+
+    <h2 class="section-title">
+      Interactive simulations
+    </h2>
+
+    <div class="grid">
+
+      <article class="card active">
+
+        <div class="tag">
+          Mechanics
+        </div>
+
+        <h2>
+          Effective Weight in a Lift
+        </h2>
+
+        <p>
+          Explore how acceleration changes effective weight,
+          the normal force measured by a scale, and the concept
+          of effective gravity.
+        </p>
+
+        <div class="card-bottom">
+
+          <a
+            class="launch"
+            href="effective-weight/">
+            Launch simulator
+          </a>
+
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="tag future">
+          In development
+        </div>
+
+        <h2>
+          Impulse &amp; Crash Safety
+        </h2>
+
+        <p>
+          Explore how stopping time affects force during a collision,
+          and why seatbelts, airbags and crumple zones reduce injury risk.
+        </p>
+
+        <div class="card-bottom">
+          <span class="coming">
+            Coming soon
+          </span>
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="tag future">
+          In development
+        </div>
+
+        <h2>
+          Skid &amp; Traction
+        </h2>
+
+        <p>
+          Explore the relationship between speed, friction,
+          road conditions and loss of traction during cornering.
+        </p>
+
+        <div class="card-bottom">
+          <span class="coming">
+            Coming soon
+          </span>
+        </div>
+
+      </article>
+
+      <article class="card">
+
+        <div class="tag future">
+          Future module
+        </div>
+
+        <h2>
+          Ultrasound Doppler
+        </h2>
+
+        <p>
+          Investigate how Doppler angle affects measured blood
+          velocity and why angle correction matters in clinical ultrasound.
+        </p>
+
+        <div class="card-bottom">
+          <span class="coming">
+            Planned
+          </span>
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+  <section class="about">
+
+    <h2 class="section-title">
+      About MAP Physics Lab
+    </h2>
+
+    <p>
+      MAP Physics Lab is a collection of interactive teaching resources
+      for Foundation Year Medical Applications of Physics.
+      The simulations are intended to complement lectures and tutorials
+      by allowing students to change physical variables and immediately
+      see their effect.
+    </p>
+
+  </section>
 
   <footer>
-    James Blackwell | Medical Physics
+    James Blackwell &nbsp;|&nbsp; Medical Physics
   </footer>
+
+</main>
 
 </body>
 </html>
