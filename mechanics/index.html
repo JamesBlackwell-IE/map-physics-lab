@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mechanics | MAP Physics Lab</title>
+
+<style>
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #202124;
+  }
+
+  .page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 20px 56px;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 22px;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    margin: 0 0 10px;
+    font-size: 2.25rem;
+  }
+
+  .intro {
+    max-width: 800px;
+    margin: 0 0 36px;
+    color: #666;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+    padding: 22px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: #b9c3cf;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  .tag {
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #eef3f8;
+    color: #52677f;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .card h2 {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+  }
+
+  .card p {
+    margin: 0;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .open {
+    margin-top: auto;
+    padding-top: 22px;
+    color: #315f86;
+    font-weight: 600;
+  }
+
+  .course-note {
+    margin-top: 32px;
+    padding: 20px 22px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    color: #666;
+    line-height: 1.55;
+  }
+
+  .course-note strong {
+    color: #202124;
+  }
+
+  footer {
+    margin-top: 38px;
+    padding-top: 22px;
+    border-top: 1px solid #ddd;
+    color: #777;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 760px) {
+
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .card {
+      min-height: 220px;
+    }
+
+  }
+
+  @media (max-width: 540px) {
+
+    h1 {
+      font-size: 1.9rem;
+    }
+
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <a class="back" href="../">
+    ← MAP Physics Lab
+  </a>
+
+
+  <h1>
+    Mechanics
+  </h1>
+
+  <p class="intro">
+    Interactive demonstrations exploring forces, motion, momentum, impulse, friction and projectile dynamics.
+  </p>
+
+
+  <div class="grid">
+
+
+    <!-- EFFECTIVE WEIGHT -->
+    <a
+      class="card"
+      href="../effective-weight/">
+
+      <div class="tag">
+        Forces &amp; acceleration
+      </div>
+
+      <h2>
+        Effective Weight in a Lift
+      </h2>
+
+      <p>
+        Explore why the reading on a scale changes when a lift accelerates. Compare constant velocity, upward and downward acceleration, and free fall.
+      </p>
+
+      <div class="open">
+        Open simulation →
+      </div>
+
+    </a>
+
+
+    <!-- IMPULSE -->
+    <a
+      class="card"
+      href="../impulse-crash-safety/">
+
+      <div class="tag">
+        Momentum &amp; impulse
+      </div>
+
+      <h2>
+        Impulse &amp; Crash Safety
+      </h2>
+
+      <p>
+        Investigate how stopping time affects the average force experienced during a collision, and why seatbelts, airbags and crumple zones reduce injury risk.
+      </p>
+
+      <div class="open">
+        Open simulation →
+      </div>
+
+    </a>
+
+
+    <!-- SKID -->
+    <a
+      class="card"
+      href="../skid-traction/">
+
+      <div class="tag">
+        Friction
+      </div>
+
+      <h2>
+        Skid &amp; Traction
+      </h2>
+
+      <p>
+        See how a rolling tyre can experience static friction, how braking demand approaches the maximum static friction, and what changes when the tyre begins to slide.
+      </p>
+
+      <div class="open">
+        Open simulation →
+      </div>
+
+    </a>
+
+
+    <!-- BULLET FLIGHT -->
+    <a
+      class="card"
+      href="../bullet-flight/">
+
+      <div class="tag">
+        Projectile dynamics
+      </div>
+
+      <h2>
+        Bullet Flight
+      </h2>
+
+      <p>
+        Explore spin, yaw, precession and nutation in a rotating projectile, and see how growing angular instability can eventually lead to tumbling.
+      </p>
+
+      <div class="open">
+        Open simulation →
+      </div>
+
+    </a>
+
+
+  </div>
+
+
+  <div class="course-note">
+
+    <strong>About these simulations:</strong>
+    The models deliberately simplify real physical systems so that individual principles can be explored clearly. Values and motion may be exaggerated where this improves visual understanding.
+
+  </div>
+
+
+  <footer>
+    James Blackwell | Medical Physics
+  </footer>
+
+</div>
+
+</body>
+</html>
