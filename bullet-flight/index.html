@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Bullet Flight | MAP Physics Lab</title>
 
 <style>
-  * { box-sizing: border-box; }
+
+  * {
+    box-sizing: border-box;
+  }
 
   body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f6f7f9;
+    background: #f7f8fa;
     color: #202124;
   }
 
@@ -28,7 +32,9 @@
     text-decoration: none;
   }
 
-  .back:hover { text-decoration: underline; }
+  .back:hover {
+    text-decoration: underline;
+  }
 
   h1 {
     margin: 0 0 6px;
@@ -37,7 +43,7 @@
 
   .subtitle {
     margin: 0 0 28px;
-    max-width: 860px;
+    max-width: 880px;
     color: #666;
     line-height: 1.45;
   }
@@ -49,8 +55,10 @@
     align-items: start;
   }
 
-  .panel, .visual-card, .concept-card {
-    background: #fff;
+  .panel,
+  .visual-card,
+  .concept-card {
+    background: white;
     border: 1px solid #ddd;
     border-radius: 14px;
   }
@@ -65,7 +73,7 @@
 
   .concept-card {
     margin-top: 14px;
-    padding: 16px 17px;
+    padding: 17px;
   }
 
   .control-title {
@@ -101,11 +109,11 @@
   button {
     min-height: 44px;
     border: 1px solid #bbb;
-    background: #fff;
+    background: white;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.9rem;
     padding: 9px 8px;
+    font-size: 0.9rem;
   }
 
   button:hover {
@@ -219,8 +227,10 @@
       font-size: 1.65rem;
     }
   }
+
 </style>
 </head>
+
 <body>
 
 <div class="page">
@@ -230,7 +240,7 @@
   <h1>Bullet Flight: Spin, Precession, Nutation &amp; Tumbling</h1>
 
   <p class="subtitle">
-    Explore the difference between spin about the projectile’s own axis, precession of that axis around the flight direction, and nutation as a smaller superimposed wobble.
+    Explore how a spinning projectile can undergo slow precession and faster nutation while remaining stable, and how growing angular motion can eventually lead to tumbling.
   </p>
 
   <div class="layout">
@@ -238,548 +248,1528 @@
     <!-- LEFT PANEL -->
     <section class="panel">
 
-      <div class="control-title">Initial yaw angle</div>
-      <input id="yawSlider" type="range" min="2" max="16" value="8" step="1">
-      <div class="value"><span id="yawValue">8</span>°</div>
-
-      <div class="control-title">Nutation amplitude</div>
-      <input id="nutationSlider" type="range" min="0" max="6" value="2" step="0.5">
-      <div class="value">±<span id="nutationValue">2.0</span>°</div>
-
-      <div class="control-title">Flight stability</div>
-      <div class="buttons">
-        <button type="button" class="active" data-stability="stable">Stable</button>
-        <button type="button" data-stability="marginal">Marginal</button>
-        <button type="button" data-stability="unstable">Unstable</button>
+      <div class="control-title">
+        Mean yaw angle
       </div>
 
-      <div class="control-title">Motion</div>
+      <input
+        id="yawSlider"
+        type="range"
+        min="2"
+        max="16"
+        value="8"
+        step="1">
+
+      <div class="value">
+        <span id="yawValue">8</span>°
+      </div>
+
+
+      <div class="control-title">
+        Nutation amplitude
+      </div>
+
+      <input
+        id="nutationSlider"
+        type="range"
+        min="0"
+        max="5"
+        value="2"
+        step="0.5">
+
+      <div class="value">
+        <span id="nutationValue">2.0</span>°
+      </div>
+
+
+      <div class="control-title">
+        Flight stability
+      </div>
+
+      <div class="buttons">
+
+        <button
+          type="button"
+          data-stability="stable"
+          class="active">
+          Stable
+        </button>
+
+        <button
+          type="button"
+          data-stability="marginal">
+          Marginal
+        </button>
+
+        <button
+          type="button"
+          data-stability="unstable">
+          Unstable
+        </button>
+
+      </div>
+
+
+      <div class="control-title">
+        Motion
+      </div>
+
       <div class="buttons motion">
-        <button id="playButton" class="active" type="button">Pause</button>
-        <button id="resetButton" type="button">Reset</button>
+
+        <button
+          id="playButton"
+          class="active"
+          type="button">
+          Pause
+        </button>
+
+        <button
+          id="resetButton"
+          type="button">
+          Reset
+        </button>
+
       </div>
 
       <div style="margin-top:8px;">
-        <button id="nutationButton" class="active" type="button" style="width:100%;">
+
+        <button
+          id="nutationButton"
+          class="active"
+          type="button"
+          style="width:100%;">
           Nutation on
         </button>
+
       </div>
+
 
       <div class="state-grid">
+
         <div class="state-box">
-          <div class="state-label">Flight state</div>
-          <div id="flightState" class="state-value">Stable precession</div>
+
+          <div class="state-label">
+            Flight state
+          </div>
+
+          <div
+            id="flightState"
+            class="state-value">
+            Stable precession
+          </div>
+
         </div>
+
+
         <div class="state-box">
-          <div class="state-label">Angular deviation</div>
-          <div id="currentAngle" class="state-value">8.0°</div>
+
+          <div class="state-label">
+            Angular deviation
+          </div>
+
+          <div
+            id="currentAngle"
+            class="state-value">
+            8.0°
+          </div>
+
         </div>
+
       </div>
 
+
       <div class="definitions">
+
         <div class="definition">
           <strong>Spin</strong>
-          Rotation of the projectile about its own longitudinal axis.
+          Rapid rotation about the projectile's own longitudinal axis.
         </div>
 
         <div class="definition">
           <strong>Yaw</strong>
-          The angle between the projectile axis and the direction of travel.
+          The angular separation between the projectile axis and its direction of travel.
         </div>
 
         <div class="definition">
           <strong>Precession</strong>
-          The projectile axis sweeps around the direction of travel.
+          A slower rotation of the projectile axis around the direction of travel.
         </div>
 
         <div class="definition">
           <strong>Nutation</strong>
-          A smaller oscillation superimposed on the precessional motion.
+          A faster, smaller angular oscillation superimposed on the precession.
         </div>
 
         <div class="definition">
           <strong>Tumbling</strong>
-          Loss of stable nose-forward flight, leading to large end-over-end rotation.
+          Large angular motion after stable nose-forward flight is lost.
         </div>
+
       </div>
 
     </section>
+
 
     <!-- RIGHT PANEL -->
     <section>
 
       <div class="visual-card">
 
-        <svg id="mainSvg" viewBox="0 0 780 560" role="img" aria-label="Projectile flight animation">
+        <svg
+          id="mainSvg"
+          viewBox="0 0 800 560"
+          role="img"
+          aria-label="Projectile showing spin, precession, nutation and tumbling">
 
-          <!-- Titles -->
-          <text x="215" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#202124">
+          <!-- TITLES -->
+          <text
+            x="250"
+            y="28"
+            text-anchor="middle"
+            font-size="14"
+            font-weight="700"
+            fill="#202124">
             Main view
           </text>
-          <text x="610" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#202124">
+
+          <text
+            x="650"
+            y="28"
+            text-anchor="middle"
+            font-size="14"
+            font-weight="700"
+            fill="#202124">
             End-on view
           </text>
 
-          <!-- Flight direction -->
-          <line id="flightLine" x1="95" y1="300" x2="500" y2="250"
-                stroke="#555" stroke-width="3" stroke-dasharray="10 8" />
-          <polygon id="flightArrow" points="500,250 483,244 486,261" fill="#555"></polygon>
-          <text x="500" y="220" text-anchor="middle" font-size="13" fill="#555">
+
+          <!-- FLIGHT DIRECTION -->
+          <line
+            x1="80"
+            y1="290"
+            x2="520"
+            y2="245"
+            stroke="#555"
+            stroke-width="3"
+            stroke-dasharray="10 8"/>
+
+          <polygon
+            points="520,245 502,239 506,256"
+            fill="#555"/>
+
+          <text
+            x="485"
+            y="216"
+            text-anchor="middle"
+            font-size="13"
+            fill="#555">
             flight direction
           </text>
 
-          <!-- Main-view path trace -->
-          <polyline id="mainTrace"
-                    fill="none"
-                    stroke="#c85d3f"
-                    stroke-width="2.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    opacity="0.82"
-                    points=""></polyline>
 
-          <!-- Mean axis line -->
-          <line id="meanAxis"
-                x1="205" y1="286"
-                x2="345" y2="268"
-                stroke="#8fa3b8"
-                stroke-width="2"
-                stroke-dasharray="6 6"></line>
+          <!-- MAIN TRACE -->
+          <polyline
+            id="mainTrace"
+            points=""
+            fill="none"
+            stroke="#c46d54"
+            stroke-width="2.5"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            opacity="0.82">
+          </polyline>
 
-          <!-- Instantaneous axis line -->
-          <line id="instAxis"
-                x1="205" y1="286"
-                x2="345" y2="268"
-                stroke="#315f86"
-                stroke-width="2.8"></line>
 
-          <!-- Current tip marker -->
-          <circle id="tipDot" cx="345" cy="268" r="4.5" fill="#315f86"></circle>
+          <!-- PROJECTILE AXIS -->
+          <line
+            id="mainAxis"
+            x1="210"
+            y1="277"
+            x2="370"
+            y2="260"
+            stroke="#315f86"
+            stroke-width="3">
+          </line>
 
-          <!-- Projectile group -->
-          <g id="projectile" transform="translate(205 286) rotate(-7)">
+          <circle
+            id="mainTip"
+            cx="370"
+            cy="260"
+            r="5"
+            fill="#315f86">
+          </circle>
 
-            <!-- axis through projectile -->
-            <line x1="-72" y1="0" x2="78" y2="0" stroke="#315f86" stroke-width="2.4"></line>
 
-            <!-- body -->
-            <path d="
-              M -68 -23
-              L 18 -23
-              C 40 -23 62 -12 76 0
-              C 62 12 40 23 18 23
-              L -68 23
-              Z"
-              fill="#d9dde2"
-              stroke="#7f8790"
-              stroke-width="1.8"></path>
+          <!-- PROJECTILE -->
+          <g
+            id="projectile"
+            transform="translate(210 277) rotate(-6)">
 
-            <!-- spin ring -->
-            <ellipse cx="-18" cy="0" rx="14" ry="24"
-                     fill="none" stroke="#b05a4d" stroke-width="2"></ellipse>
+            <line
+              x1="-74"
+              y1="0"
+              x2="80"
+              y2="0"
+              stroke="#315f86"
+              stroke-width="2">
+            </line>
 
-            <!-- moving spin marker -->
-            <circle id="spinDot" cx="-4" cy="0" r="3.8" fill="#b05a4d"></circle>
+            <path
+              d="
+                M -70 -23
+                L 18 -23
+                C 42 -23 64 -12 79 0
+                C 64 12 42 23 18 23
+                L -70 23
+                Z"
+              fill="#d7dadd"
+              stroke="#7d858c"
+              stroke-width="2">
+            </path>
+
+            <!-- SPIN RING -->
+            <ellipse
+              cx="-15"
+              cy="0"
+              rx="14"
+              ry="25"
+              fill="none"
+              stroke="#b05a4d"
+              stroke-width="2">
+            </ellipse>
+
+            <circle
+              id="spinDot"
+              cx="-1"
+              cy="0"
+              r="4"
+              fill="#b05a4d">
+            </circle>
 
           </g>
 
-          <!-- Spin label -->
-          <path d="M145 214 A34 18 0 0 1 198 214"
-                fill="none" stroke="#b05a4d" stroke-width="2.4"></path>
-          <polygon points="198,214 187,208 189,220" fill="#b05a4d"></polygon>
-          <text x="170" y="194" text-anchor="middle" font-size="12" font-weight="600" fill="#b05a4d">
+
+          <!-- SPIN LABEL -->
+          <text
+            x="165"
+            y="205"
+            text-anchor="middle"
+            font-size="12"
+            font-weight="600"
+            fill="#b05a4d">
             spin
           </text>
 
-          <!-- Main-view annotation -->
-          <text x="315" y="345" text-anchor="middle" font-size="12" fill="#666">
-            tip of projectile axis traces loops
-          </text>
 
-          <!-- End-on view outer circle -->
-          <circle cx="610" cy="320" r="92" fill="#fafafa" stroke="#ddd" stroke-width="2"></circle>
+          <!-- END-ON VIEW -->
+          <circle
+            cx="650"
+            cy="330"
+            r="100"
+            fill="#fafafa"
+            stroke="#ddd"
+            stroke-width="2">
+          </circle>
 
-          <!-- End-on reference orbit -->
-          <circle id="endRefOrbit" cx="610" cy="320" r="46"
-                  fill="none" stroke="#aab4be" stroke-width="2" stroke-dasharray="6 6"></circle>
 
-          <!-- End-on trace -->
-          <polyline id="endTrace"
-                    fill="none"
-                    stroke="#7c9ab9"
-                    stroke-width="2.6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    opacity="0.8"
-                    points=""></polyline>
+          <!-- PURE PRECESSION REFERENCE -->
+          <circle
+            id="precessionReference"
+            cx="650"
+            cy="330"
+            r="44"
+            fill="none"
+            stroke="#aab4be"
+            stroke-width="2"
+            stroke-dasharray="6 6">
+          </circle>
 
-          <!-- Centre -->
-          <circle cx="610" cy="320" r="5" fill="#555"></circle>
 
-          <!-- Axis line in end-on view -->
-          <line id="endAxis" x1="610" y1="320" x2="656" y2="320"
-                stroke="#315f86" stroke-width="4" stroke-linecap="round"></line>
-          <circle id="endTip" cx="656" cy="320" r="7" fill="#315f86"></circle>
+          <!-- ROSETTE TRACE -->
+          <polyline
+            id="endTrace"
+            points=""
+            fill="none"
+            stroke="#607fa2"
+            stroke-width="2.6"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            opacity="0.82">
+          </polyline>
 
-          <!-- labels -->
-          <text x="610" y="438" text-anchor="middle" font-size="11" fill="#666">
+
+          <!-- FLIGHT DIRECTION CENTRE -->
+          <circle
+            cx="650"
+            cy="330"
+            r="5"
+            fill="#555">
+          </circle>
+
+
+          <!-- CURRENT AXIS -->
+          <line
+            id="endAxis"
+            x1="650"
+            y1="330"
+            x2="694"
+            y2="330"
+            stroke="#315f86"
+            stroke-width="4"
+            stroke-linecap="round">
+          </line>
+
+          <circle
+            id="endTip"
+            cx="694"
+            cy="330"
+            r="7"
+            fill="#315f86">
+          </circle>
+
+
+          <!-- END-ON LABELS -->
+          <text
+            x="650"
+            y="458"
+            text-anchor="middle"
+            font-size="11"
+            fill="#666">
             centre = direction of travel
           </text>
-          <text x="610" y="455" text-anchor="middle" font-size="11" fill="#666">
-            tip path = precession/nutation
+
+          <text
+            x="650"
+            y="476"
+            text-anchor="middle"
+            font-size="11"
+            fill="#666">
+            blue trace = motion of projectile axis
           </text>
 
-          <!-- Tumbling notice -->
-          <g id="tumbleNotice" opacity="0">
-            <rect x="520" y="250" width="180" height="92" rx="12"
-                  fill="#fafafa" stroke="#ddd"></rect>
-            <text x="610" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="#b05a4d">
+
+          <!-- TUMBLE MESSAGE -->
+          <g
+            id="tumbleNotice"
+            opacity="0">
+
+            <rect
+              x="560"
+              y="282"
+              width="180"
+              height="94"
+              rx="12"
+              fill="#fafafa"
+              stroke="#ddd">
+            </rect>
+
+            <text
+              x="650"
+              y="315"
+              text-anchor="middle"
+              font-size="13"
+              font-weight="700"
+              fill="#b05a4d">
               TUMBLING
             </text>
-            <text x="610" y="307" text-anchor="middle" font-size="12" fill="#666">
-              stable nose-forward flight
+
+            <text
+              x="650"
+              y="341"
+              text-anchor="middle"
+              font-size="12"
+              fill="#666">
+              stable nose-forward
             </text>
-            <text x="610" y="325" text-anchor="middle" font-size="12" fill="#666">
-              has been lost
+
+            <text
+              x="650"
+              y="359"
+              text-anchor="middle"
+              font-size="12"
+              fill="#666">
+              orientation has been lost
             </text>
+
           </g>
 
         </svg>
 
+
         <div class="visual-caption">
-          In the main view, the projectile axis tip traces visible loops. In the end-on view, the same motion appears as circular or rosette-like paths about the flight direction.
+          The end-on trace combines a slower precessional rotation with a faster, smaller nutational motion. With nutation switched off, the trace becomes a simple circle.
         </div>
+
       </div>
 
-      <div class="concept-card">
-        <div class="concept-title">How to read the animation</div>
 
-        <p><strong>Spin</strong> is the small red motion around the projectile’s own axis.</p>
-        <p><strong>Precession</strong> makes the projectile axis sweep around the flight direction, producing full loops.</p>
-        <p><strong>Nutation</strong> slightly changes the loop size, producing a rosette-like pattern rather than a simple repeated orbit.</p>
+      <div class="concept-card">
+
+        <div class="concept-title">
+          Two angular motions are superimposed
+        </div>
+
+        <p>
+          <strong>Precession</strong> produces the larger, slower rotation of the projectile axis around the direction of travel.
+        </p>
+
+        <p>
+          <strong>Nutation</strong> is a smaller, faster angular motion superimposed on that precession. Together they can produce the characteristic looping or rosette-like path of the projectile axis.
+        </p>
+
+        <p>
+          Switching nutation off leaves only the slow precessional mode, so the end-on trace becomes a simple circular orbit.
+        </p>
 
         <div class="take-home">
-          A stable bullet can spin, precess and nutate at the same time. The key issue is whether that motion stays bounded or grows until tumbling occurs.
+          Nutation is not simply a change in the radius of precession. It is a second angular mode superimposed on the precessional motion.
         </div>
+
       </div>
 
     </section>
+
   </div>
 
+
   <div class="note">
-    This is a conceptual teaching animation rather than a quantitative ballistics model. Motion is exaggerated for clarity.
+    This is a conceptual teaching model. The relative frequencies and amplitudes are deliberately chosen to make the two angular modes easy to distinguish and are not intended to represent a specific projectile.
   </div>
 
 </div>
 
+
 <script>
+
 (() => {
 
-  const yawSlider = document.getElementById("yawSlider");
-  const nutationSlider = document.getElementById("nutationSlider");
-  const yawValue = document.getElementById("yawValue");
-  const nutationValue = document.getElementById("nutationValue");
+  const yawSlider =
+    document.getElementById("yawSlider");
 
-  const playButton = document.getElementById("playButton");
-  const resetButton = document.getElementById("resetButton");
-  const nutationButton = document.getElementById("nutationButton");
+  const nutationSlider =
+    document.getElementById("nutationSlider");
 
-  const flightState = document.getElementById("flightState");
-  const currentAngle = document.getElementById("currentAngle");
+  const yawValue =
+    document.getElementById("yawValue");
 
-  const stabilityButtons = [...document.querySelectorAll("[data-stability]")];
+  const nutationValue =
+    document.getElementById("nutationValue");
 
-  const projectile = document.getElementById("projectile");
-  const spinDot = document.getElementById("spinDot");
+  const playButton =
+    document.getElementById("playButton");
 
-  const meanAxis = document.getElementById("meanAxis");
-  const instAxis = document.getElementById("instAxis");
-  const tipDot = document.getElementById("tipDot");
-  const mainTrace = document.getElementById("mainTrace");
+  const resetButton =
+    document.getElementById("resetButton");
 
-  const endAxis = document.getElementById("endAxis");
-  const endTip = document.getElementById("endTip");
-  const endTrace = document.getElementById("endTrace");
-  const endRefOrbit = document.getElementById("endRefOrbit");
+  const nutationButton =
+    document.getElementById("nutationButton");
 
-  const tumbleNotice = document.getElementById("tumbleNotice");
+  const flightState =
+    document.getElementById("flightState");
+
+  const currentAngle =
+    document.getElementById("currentAngle");
+
+  const stabilityButtons =
+    [...document.querySelectorAll("[data-stability]")];
+
+  const projectile =
+    document.getElementById("projectile");
+
+  const spinDot =
+    document.getElementById("spinDot");
+
+  const mainAxis =
+    document.getElementById("mainAxis");
+
+  const mainTip =
+    document.getElementById("mainTip");
+
+  const mainTrace =
+    document.getElementById("mainTrace");
+
+  const endAxis =
+    document.getElementById("endAxis");
+
+  const endTip =
+    document.getElementById("endTip");
+
+  const endTrace =
+    document.getElementById("endTrace");
+
+  const precessionReference =
+    document.getElementById("precessionReference");
+
+  const tumbleNotice =
+    document.getElementById("tumbleNotice");
+
 
   let stability = "stable";
   let running = true;
   let nutationOn = true;
 
-  let startTime = performance.now();
-  let pausedElapsed = 0;
+  let startTime =
+    performance.now();
+
+  let pausedElapsed =
+    0;
+
 
   let mainTracePoints = [];
   let endTracePoints = [];
+
   let lastTraceTime = 0;
 
-  const tumbleStartSeconds = 8.0;
 
-  const precessionRate = 0.0024;   // rad/ms
-  const nutationRate   = 0.0068;   // rad/ms
-  const spinRate       = 0.0120;   // rad/ms
+  /*
+    Conceptual angular frequencies.
 
-  const baseX = 205;
-  const baseY = 286;
-  const axisLength = 150;
+    Nutation is deliberately faster than
+    precession so that the smaller loops
+    are visible.
+  */
 
-  const flightDX = 405;
-  const flightDY = -50;
-  const flightLen = Math.hypot(flightDX, flightDY);
-  const ex = flightDX / flightLen;
-  const ey = flightDY / flightLen;
+  const omegaP =
+    0.00115;
 
-  // Normal to flight direction
-  const nx = -ey;
-  const ny = ex;
+  const omegaN =
+    0.0049;
 
-  // Second screen-direction for projected loop ellipse
-  const mx = -0.35 * ex + 0.95 * nx;
-  const my = -0.35 * ey + 0.95 * ny;
+  const omegaSpin =
+    0.014;
+
+
+  const tumbleStartSeconds =
+    9;
+
+
+  /*
+    Main-view geometry.
+  */
+
+  const baseX = 210;
+  const baseY = 277;
+
+  const flightEndX = 520;
+  const flightEndY = 245;
+
+  const dx =
+    flightEndX - baseX;
+
+  const dy =
+    flightEndY - baseY;
+
+  const flightLength =
+    Math.hypot(
+      dx,
+      dy
+    );
+
+  const ux =
+    dx / flightLength;
+
+  const uy =
+    dy / flightLength;
+
+
+  /*
+    Perpendicular direction on screen.
+  */
+
+  const px =
+    -uy;
+
+  const py =
+    ux;
+
+
+  const axisLength =
+    160;
+
 
   function elapsedTime(now) {
-    return running ? pausedElapsed + (now - startTime) : pausedElapsed;
+
+    return running
+      ? pausedElapsed +
+        (now - startTime)
+      : pausedElapsed;
+
   }
 
-  function resetAnimation() {
-    pausedElapsed = 0;
-    startTime = performance.now();
-    lastTraceTime = 0;
-    clearTraces();
-  }
 
   function clearTraces() {
+
     mainTracePoints = [];
     endTracePoints = [];
-    mainTrace.setAttribute("points", "");
-    endTrace.setAttribute("points", "");
+
+    mainTrace.setAttribute(
+      "points",
+      ""
+    );
+
+    endTrace.setAttribute(
+      "points",
+      ""
+    );
+
   }
+
+
+  function resetAnimation() {
+
+    pausedElapsed = 0;
+
+    startTime =
+      performance.now();
+
+    lastTraceTime = 0;
+
+    clearTraces();
+
+  }
+
 
   function smoothstep(x) {
-    const t = Math.max(0, Math.min(1, x));
-    return t * t * (3 - 2 * t);
+
+    const t =
+      Math.max(
+        0,
+        Math.min(
+          1,
+          x
+        )
+      );
+
+    return (
+      t *
+      t *
+      (3 - 2 * t)
+    );
+
   }
 
-  function yawEnvelope(baseYaw, seconds) {
-    if (stability === "stable") {
-      return baseYaw;
+
+  function meanYaw(
+    selectedYaw,
+    seconds
+  ) {
+
+    if (
+      stability === "stable"
+    ) {
+
+      return selectedYaw;
+
     }
 
-    if (stability === "marginal") {
-      return baseYaw + 3 * (0.5 + 0.5 * Math.sin(seconds * 0.9));
+
+    if (
+      stability === "marginal"
+    ) {
+
+      return (
+        selectedYaw +
+        2.5 *
+        (
+          0.5 +
+          0.5 *
+          Math.sin(
+            seconds *
+            0.55
+          )
+        )
+      );
+
     }
 
-    const growth = smoothstep(seconds / tumbleStartSeconds);
-    return baseYaw + (30 - baseYaw) * growth;
+
+    const growth =
+      smoothstep(
+        seconds /
+        tumbleStartSeconds
+      );
+
+
+    return (
+      selectedYaw +
+      (32 - selectedYaw) *
+      growth
+    );
+
   }
 
-  function addTracePoint(list, x, y, elapsed, windowMs) {
-    if (elapsed - lastTraceTime > 42) {
-      list.push({ x, y, t: elapsed });
+
+  function addTrace(
+    array,
+    x,
+    y,
+    elapsed
+  ) {
+
+    array.push({
+      x,
+      y,
+      t: elapsed
+    });
+
+
+    /*
+      Keep approximately six seconds
+      of history.
+    */
+
+    const windowMs =
+      6000;
+
+
+    while (
+      array.length &&
+      elapsed -
+      array[0].t >
+      windowMs
+    ) {
+
+      array.shift();
+
     }
-    while (list.length && elapsed - list[0].t > windowMs) {
-      list.shift();
-    }
+
   }
 
-  function listToPoints(list) {
-    return list.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+
+  function pointString(array) {
+
+    return array
+      .map(
+        p =>
+          p.x.toFixed(1) +
+          "," +
+          p.y.toFixed(1)
+      )
+      .join(" ");
+
   }
 
-  function updateTraceOpacity(poly, list, maxOpacity = 0.82) {
-    const op = Math.max(0.18, Math.min(maxOpacity, list.length / 45));
-    poly.setAttribute("opacity", op.toFixed(2));
-  }
 
   function draw(now) {
-    const elapsed = elapsedTime(now);
-    const seconds = elapsed / 1000;
 
-    const baseYaw = Number(yawSlider.value);
-    const selectedNutation = Number(nutationSlider.value);
-    const nutAmp = nutationOn ? selectedNutation : 0;
+    const elapsed =
+      elapsedTime(now);
 
-    const phi = elapsed * precessionRate;
-    const envelope = yawEnvelope(baseYaw, seconds);
-    const nutation = nutAmp * Math.sin(elapsed * nutationRate);
-    const instantaneousYaw = Math.max(0, envelope + nutation);
+    const seconds =
+      elapsed /
+      1000;
 
-    const tumbling = stability === "unstable" && seconds >= tumbleStartSeconds;
 
-    // Mean axis
-    const meanTipX = baseX + axisLength * ex;
-    const meanTipY = baseY + axisLength * ey;
-    meanAxis.setAttribute("x1", baseX.toFixed(1));
-    meanAxis.setAttribute("y1", baseY.toFixed(1));
-    meanAxis.setAttribute("x2", meanTipX.toFixed(1));
-    meanAxis.setAttribute("y2", meanTipY.toFixed(1));
+    const selectedYaw =
+      Number(
+        yawSlider.value
+      );
+
+
+    const selectedNutation =
+      nutationOn
+        ? Number(
+            nutationSlider.value
+          )
+        : 0;
+
+
+    /*
+      Slow precessional mode.
+    */
+
+    const phaseP =
+      omegaP *
+      elapsed;
+
+
+    /*
+      Faster nutational mode.
+    */
+
+    const phaseN =
+      omegaN *
+      elapsed;
+
+
+    /*
+      Stability changes the amplitude
+      of the slow precession mode.
+    */
+
+    const ApDegrees =
+      meanYaw(
+        selectedYaw,
+        seconds
+      );
+
+
+    const AnDegrees =
+      selectedNutation;
+
+
+    /*
+      SUPERPOSITION OF MODES
+
+      These x/y coordinates describe
+      the projectile axis in angular space.
+    */
+
+    const angularX =
+      ApDegrees *
+      Math.cos(
+        phaseP
+      ) +
+      AnDegrees *
+      Math.cos(
+        phaseN
+      );
+
+
+    const angularY =
+      ApDegrees *
+      Math.sin(
+        phaseP
+      ) +
+      AnDegrees *
+      Math.sin(
+        phaseN
+      );
+
+
+    const angularMagnitude =
+      Math.hypot(
+        angularX,
+        angularY
+      );
+
+
+    const tumbling =
+      stability === "unstable" &&
+      seconds >=
+      tumbleStartSeconds;
+
+
+    /*
+      PRECESSION + NUTATION
+    */
 
     if (!tumbling) {
-      // Main view:
-      // radial size is proportional to instantaneous yaw
-      const radialMain = instantaneousYaw * 3.2;
 
-      const dispX = radialMain * Math.cos(phi) * nx + radialMain * 0.72 * Math.sin(phi) * mx;
-      const dispY = radialMain * Math.cos(phi) * ny + radialMain * 0.72 * Math.sin(phi) * my;
 
-      const tipX = meanTipX + dispX;
-      const tipY = meanTipY + dispY;
+      /*
+        END-ON VIEW
 
-      instAxis.setAttribute("x1", baseX.toFixed(1));
-      instAxis.setAttribute("y1", baseY.toFixed(1));
-      instAxis.setAttribute("x2", tipX.toFixed(1));
-      instAxis.setAttribute("y2", tipY.toFixed(1));
+        Angular x and y map directly to
+        screen displacement.
+      */
 
-      tipDot.setAttribute("cx", tipX.toFixed(1));
-      tipDot.setAttribute("cy", tipY.toFixed(1));
+      const endScale =
+        2.6;
 
-      const angleDeg = Math.atan2(tipY - baseY, tipX - baseX) * 180 / Math.PI;
-      projectile.setAttribute("transform", `translate(${baseX} ${baseY}) rotate(${angleDeg})`);
 
-      // Spin marker moves around a ring attached to the projectile
-      const spinPhase = elapsed * spinRate;
-      const spinCx = -18 + 14 * Math.cos(spinPhase);
-      const spinCy = 0 + 24 * Math.sin(spinPhase);
-      spinDot.setAttribute("cx", spinCx.toFixed(1));
-      spinDot.setAttribute("cy", spinCy.toFixed(1));
+      const endX =
+        650 +
+        angularX *
+        endScale;
 
-      // End-on view
-      const radialEnd = instantaneousYaw * 2.6;
-      const endX = 610 + radialEnd * Math.cos(phi);
-      const endY = 320 + radialEnd * Math.sin(phi);
 
-      endAxis.setAttribute("x1", "610");
-      endAxis.setAttribute("y1", "320");
-      endAxis.setAttribute("x2", endX.toFixed(1));
-      endAxis.setAttribute("y2", endY.toFixed(1));
+      const endY =
+        330 +
+        angularY *
+        endScale;
 
-      endTip.setAttribute("cx", endX.toFixed(1));
-      endTip.setAttribute("cy", endY.toFixed(1));
 
-      // Keep a reference orbit at the mean yaw
-      endRefOrbit.setAttribute("r", Math.max(8, envelope * 2.6).toFixed(1));
+      endAxis.setAttribute(
+        "x1",
+        "650"
+      );
 
-      if (elapsed - lastTraceTime > 42) {
-        mainTracePoints.push({ x: tipX, y: tipY, t: elapsed });
-        endTracePoints.push({ x: endX, y: endY, t: elapsed });
-        lastTraceTime = elapsed;
+      endAxis.setAttribute(
+        "y1",
+        "330"
+      );
+
+      endAxis.setAttribute(
+        "x2",
+        endX.toFixed(1)
+      );
+
+      endAxis.setAttribute(
+        "y2",
+        endY.toFixed(1)
+      );
+
+
+      endTip.setAttribute(
+        "cx",
+        endX.toFixed(1)
+      );
+
+      endTip.setAttribute(
+        "cy",
+        endY.toFixed(1)
+      );
+
+
+      /*
+        Dashed reference circle shows
+        the slow precession radius.
+      */
+
+      precessionReference.setAttribute(
+        "r",
+        Math.max(
+          6,
+          ApDegrees *
+          endScale
+        ).toFixed(1)
+      );
+
+
+      /*
+        MAIN VIEW
+
+        Project the same angular motion
+        into a pseudo-3D side view.
+      */
+
+      const longitudinalX =
+        baseX +
+        axisLength *
+        ux;
+
+      const longitudinalY =
+        baseY +
+        axisLength *
+        uy;
+
+
+      /*
+        angularY controls vertical displacement.
+
+        angularX contributes a smaller
+        apparent depth displacement.
+      */
+
+      const mainScale =
+        3.0;
+
+
+      const depthScale =
+        0.42;
+
+
+      const tipX =
+        longitudinalX +
+        angularY *
+        mainScale *
+        px +
+        angularX *
+        mainScale *
+        depthScale *
+        ux;
+
+
+      const tipY =
+        longitudinalY +
+        angularY *
+        mainScale *
+        py +
+        angularX *
+        mainScale *
+        depthScale *
+        uy;
+
+
+      mainAxis.setAttribute(
+        "x1",
+        baseX.toFixed(1)
+      );
+
+      mainAxis.setAttribute(
+        "y1",
+        baseY.toFixed(1)
+      );
+
+      mainAxis.setAttribute(
+        "x2",
+        tipX.toFixed(1)
+      );
+
+      mainAxis.setAttribute(
+        "y2",
+        tipY.toFixed(1)
+      );
+
+
+      mainTip.setAttribute(
+        "cx",
+        tipX.toFixed(1)
+      );
+
+      mainTip.setAttribute(
+        "cy",
+        tipY.toFixed(1)
+      );
+
+
+      /*
+        Orient the projectile along the
+        instantaneous axis.
+      */
+
+      const projectileAngle =
+        Math.atan2(
+          tipY - baseY,
+          tipX - baseX
+        ) *
+        180 /
+        Math.PI;
+
+
+      projectile.setAttribute(
+        "transform",
+        "translate(" +
+        baseX +
+        " " +
+        baseY +
+        ") rotate(" +
+        projectileAngle.toFixed(2) +
+        ")"
+      );
+
+
+      /*
+        SPIN
+
+        Marker moves around the small
+        elliptical ring around the body.
+      */
+
+      const spinPhase =
+        omegaSpin *
+        elapsed;
+
+
+      spinDot.setAttribute(
+        "cx",
+        (
+          -15 +
+          14 *
+          Math.cos(
+            spinPhase
+          )
+        ).toFixed(1)
+      );
+
+
+      spinDot.setAttribute(
+        "cy",
+        (
+          25 *
+          Math.sin(
+            spinPhase
+          )
+        ).toFixed(1)
+      );
+
+
+      /*
+        Trace history.
+      */
+
+      if (
+        elapsed -
+        lastTraceTime >
+        35
+      ) {
+
+        addTrace(
+          mainTracePoints,
+          tipX,
+          tipY,
+          elapsed
+        );
+
+
+        addTrace(
+          endTracePoints,
+          endX,
+          endY,
+          elapsed
+        );
+
+
+        lastTraceTime =
+          elapsed;
+
       }
 
-      while (mainTracePoints.length && elapsed - mainTracePoints[0].t > 5500) {
-        mainTracePoints.shift();
-      }
-      while (endTracePoints.length && elapsed - endTracePoints[0].t > 5500) {
-        endTracePoints.shift();
-      }
 
-      mainTrace.setAttribute("points", listToPoints(mainTracePoints));
-      endTrace.setAttribute("points", listToPoints(endTracePoints));
-      updateTraceOpacity(mainTrace, mainTracePoints, 0.84);
-      updateTraceOpacity(endTrace, endTracePoints, 0.80);
+      mainTrace.setAttribute(
+        "points",
+        pointString(
+          mainTracePoints
+        )
+      );
 
-      tumbleNotice.setAttribute("opacity", "0");
 
-    } else {
-      // Tumbling
-      const tumbleElapsed = seconds - tumbleStartSeconds;
-      const tumbleRateDeg = 135;
-      const entryAngle = -12;
-      const tumbleAngle = entryAngle + tumbleRateDeg * tumbleElapsed;
+      endTrace.setAttribute(
+        "points",
+        pointString(
+          endTracePoints
+        )
+      );
 
-      projectile.setAttribute("transform", `translate(${baseX} ${baseY}) rotate(${tumbleAngle})`);
 
-      // Freeze/hide axis traces once tumbling begins
-      mainTrace.setAttribute("points", "");
-      endTrace.setAttribute("points", "");
-      tipDot.setAttribute("cx", meanTipX.toFixed(1));
-      tipDot.setAttribute("cy", meanTipY.toFixed(1));
-      instAxis.setAttribute("x1", baseX.toFixed(1));
-      instAxis.setAttribute("y1", baseY.toFixed(1));
-      instAxis.setAttribute("x2", meanTipX.toFixed(1));
-      instAxis.setAttribute("y2", meanTipY.toFixed(1));
+      tumbleNotice.setAttribute(
+        "opacity",
+        "0"
+      );
 
-      endAxis.setAttribute("x1", "610");
-      endAxis.setAttribute("y1", "320");
-      endAxis.setAttribute("x2", "610");
-      endAxis.setAttribute("y2", "320");
-      endTip.setAttribute("cx", "610");
-      endTip.setAttribute("cy", "320");
-
-      tumbleNotice.setAttribute("opacity", "1");
     }
 
-    // Status text
+
+    /*
+      TUMBLING
+    */
+
+    else {
+
+      const tumbleElapsed =
+        seconds -
+        tumbleStartSeconds;
+
+
+      const tumbleRate =
+        125;
+
+
+      const tumbleAngle =
+        -10 +
+        tumbleRate *
+        tumbleElapsed;
+
+
+      projectile.setAttribute(
+        "transform",
+        "translate(" +
+        baseX +
+        " " +
+        baseY +
+        ") rotate(" +
+        tumbleAngle.toFixed(2) +
+        ")"
+      );
+
+
+      clearTraces();
+
+
+      mainAxis.setAttribute(
+        "x1",
+        baseX
+      );
+
+      mainAxis.setAttribute(
+        "y1",
+        baseY
+      );
+
+      mainAxis.setAttribute(
+        "x2",
+        baseX
+      );
+
+      mainAxis.setAttribute(
+        "y2",
+        baseY
+      );
+
+
+      mainTip.setAttribute(
+        "cx",
+        baseX
+      );
+
+      mainTip.setAttribute(
+        "cy",
+        baseY
+      );
+
+
+      endAxis.setAttribute(
+        "x1",
+        "650"
+      );
+
+      endAxis.setAttribute(
+        "y1",
+        "330"
+      );
+
+      endAxis.setAttribute(
+        "x2",
+        "650"
+      );
+
+      endAxis.setAttribute(
+        "y2",
+        "330"
+      );
+
+
+      endTip.setAttribute(
+        "cx",
+        "650"
+      );
+
+      endTip.setAttribute(
+        "cy",
+        "330"
+      );
+
+
+      tumbleNotice.setAttribute(
+        "opacity",
+        "1"
+      );
+
+    }
+
+
+    /*
+      STATUS
+    */
+
     if (tumbling) {
-      flightState.textContent = "Tumbling";
-      currentAngle.textContent = "Large / unbounded";
-    } else if (stability === "unstable" && envelope > 20) {
-      flightState.textContent = "Growing instability";
-      currentAngle.textContent = `${instantaneousYaw.toFixed(1)}°`;
-    } else if (stability === "unstable") {
-      flightState.textContent = "Yaw increasing";
-      currentAngle.textContent = `${instantaneousYaw.toFixed(1)}°`;
-    } else if (stability === "marginal") {
-      flightState.textContent = "Marginal stability";
-      currentAngle.textContent = `${instantaneousYaw.toFixed(1)}°`;
-    } else {
-      flightState.textContent = "Stable precession";
-      currentAngle.textContent = `${instantaneousYaw.toFixed(1)}°`;
+
+      flightState.textContent =
+        "Tumbling";
+
+      currentAngle.textContent =
+        "Large / unbounded";
+
     }
 
-    yawValue.textContent = baseYaw.toFixed(0);
-    nutationValue.textContent = selectedNutation.toFixed(1);
+    else if (
+      stability === "unstable" &&
+      ApDegrees >
+      22
+    ) {
 
-    requestAnimationFrame(draw);
+      flightState.textContent =
+        "Growing instability";
+
+      currentAngle.textContent =
+        angularMagnitude.toFixed(1) +
+        "°";
+
+    }
+
+    else if (
+      stability === "unstable"
+    ) {
+
+      flightState.textContent =
+        "Yaw increasing";
+
+      currentAngle.textContent =
+        angularMagnitude.toFixed(1) +
+        "°";
+
+    }
+
+    else if (
+      stability === "marginal"
+    ) {
+
+      flightState.textContent =
+        "Marginal stability";
+
+      currentAngle.textContent =
+        angularMagnitude.toFixed(1) +
+        "°";
+
+    }
+
+    else {
+
+      flightState.textContent =
+        "Stable precession";
+
+      currentAngle.textContent =
+        angularMagnitude.toFixed(1) +
+        "°";
+
+    }
+
+
+    yawValue.textContent =
+      selectedYaw.toFixed(0);
+
+
+    nutationValue.textContent =
+      Number(
+        nutationSlider.value
+      ).toFixed(1);
+
+
+    requestAnimationFrame(
+      draw
+    );
+
   }
 
-  stabilityButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      stability = button.dataset.stability;
-      stabilityButtons.forEach(b => b.classList.toggle("active", b === button));
-      resetAnimation();
-    });
-  });
 
-  playButton.addEventListener("click", () => {
-    if (running) {
-      pausedElapsed += performance.now() - startTime;
-      running = false;
-      playButton.textContent = "Play";
-      playButton.classList.remove("active");
-    } else {
-      startTime = performance.now();
-      running = true;
-      playButton.textContent = "Pause";
-      playButton.classList.add("active");
+  stabilityButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          stability =
+            button.dataset.stability;
+
+
+          stabilityButtons.forEach(
+            b => {
+
+              b.classList.toggle(
+                "active",
+                b === button
+              );
+
+            }
+          );
+
+
+          resetAnimation();
+
+        }
+      );
+
     }
-  });
+  );
 
-  resetButton.addEventListener("click", () => {
-    resetAnimation();
-  });
 
-  nutationButton.addEventListener("click", () => {
-    nutationOn = !nutationOn;
-    nutationButton.textContent = nutationOn ? "Nutation on" : "Nutation off";
-    nutationButton.classList.toggle("active", nutationOn);
-    clearTraces();
-  });
+  playButton.addEventListener(
+    "click",
+    () => {
 
-  yawSlider.addEventListener("input", () => {
-    yawValue.textContent = Number(yawSlider.value).toFixed(0);
-    resetAnimation();
-  });
+      if (running) {
 
-  nutationSlider.addEventListener("input", () => {
-    nutationValue.textContent = Number(nutationSlider.value).toFixed(1);
-    clearTraces();
-  });
+        pausedElapsed +=
+          performance.now() -
+          startTime;
 
-  requestAnimationFrame(draw);
+        running = false;
+
+        playButton.textContent =
+          "Play";
+
+        playButton.classList.remove(
+          "active"
+        );
+
+      }
+
+      else {
+
+        startTime =
+          performance.now();
+
+        running = true;
+
+        playButton.textContent =
+          "Pause";
+
+        playButton.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+  );
+
+
+  resetButton.addEventListener(
+    "click",
+    () => {
+
+      resetAnimation();
+
+    }
+  );
+
+
+  nutationButton.addEventListener(
+    "click",
+    () => {
+
+      nutationOn =
+        !nutationOn;
+
+
+      nutationButton.textContent =
+        nutationOn
+          ? "Nutation on"
+          : "Nutation off";
+
+
+      nutationButton.classList.toggle(
+        "active",
+        nutationOn
+      );
+
+
+      clearTraces();
+
+    }
+  );
+
+
+  yawSlider.addEventListener(
+    "input",
+    () => {
+
+      yawValue.textContent =
+        Number(
+          yawSlider.value
+        ).toFixed(0);
+
+
+      resetAnimation();
+
+    }
+  );
+
+
+  nutationSlider.addEventListener(
+    "input",
+    () => {
+
+      nutationValue.textContent =
+        Number(
+          nutationSlider.value
+        ).toFixed(1);
+
+
+      clearTraces();
+
+    }
+  );
+
+
+  requestAnimationFrame(
+    draw
+  );
 
 })();
+
 </script>
 
 </body>
