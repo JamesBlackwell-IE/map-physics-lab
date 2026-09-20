@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Impulse & Crash Safety | MAP Physics Lab</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #202124;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 20px 50px;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    margin: 0 0 28px;
+    color: #666;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .panel,
+  .diagram,
+  .relationship {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  label {
+    display: block;
+    margin-top: 18px;
+    font-weight: 600;
+  }
+
+  label:first-child {
+    margin-top: 0;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .value {
+    margin-top: 4px;
+    color: #666;
+  }
+
+  .preset-title {
+    margin-top: 24px;
+    font-weight: 600;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  button {
+    min-height: 44px;
+    border: 1px solid #bbb;
+    background: white;
+    padding: 11px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.92rem;
+  }
+
+  button:hover {
+    background: #f2f2f2;
+  }
+
+  button.active {
+    background: #e8eef8;
+    border-color: #5676a5;
+    font-weight: 600;
+  }
+
+  .results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .result {
+    padding: 17px;
+    border-radius: 12px;
+    background: #f5f6f8;
+    border: 1px solid #e3e5e8;
+  }
+
+  .result-label {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .result-big {
+    margin-top: 3px;
+    font-size: 1.7rem;
+    font-weight: 700;
+  }
+
+  .explanation {
+    margin-top: 16px;
+    line-height: 1.5;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .diagram {
+    padding: 12px;
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .relationship {
+    margin-top: 14px;
+    padding: 16px;
+  }
+
+  .relationship-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .relationship-title {
+    font-weight: 600;
+  }
+
+  .formula {
+    font-size: 1.2rem;
+  }
+
+  #calcText {
+    margin-top: 8px;
+    color: #666;
+  }
+
+  .key-point {
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  .note {
+    margin-top: 24px;
+    color: #777;
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 800px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .buttons,
+    .results {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <a class="back" href="../">← MAP Physics Lab</a>
+
+  <h1>Impulse &amp; Crash Safety</h1>
+
+  <p class="subtitle">
+    Explore how momentum and stopping time affect the force experienced during a collision.
+  </p>
+
+  <div class="layout">
+
+    <!-- CONTROLS -->
+    <section class="panel">
+
+      <label for="mass">Occupant mass</label>
+
+      <input
+        id="mass"
+        type="range"
+        min="40"
+        max="120"
+        value="70"
+        step="1">
+
+      <div class="value">
+        <span id="massOut">70</span> kg
+      </div>
+
+      <label for="speed">Initial speed</label>
+
+      <input
+        id="speed"
+        type="range"
+        min="5"
+        max="30"
+        value="15"
+        step="1">
+
+      <div class="value">
+        <span id="speedOut">15</span> m/s
+      </div>
+
+      <div class="preset-title">
+        Choose a safety scenario
+      </div>
+
+      <div class="buttons">
+
+        <button type="button" data-mode="rigid">
+          Rigid stop
+        </button>
+
+        <button type="button" data-mode="belt">
+          Seatbelt
+        </button>
+
+        <button type="button" data-mode="airbag">
+          Airbag
+        </button>
+
+      </div>
+
+      <div class="results">
+
+        <div class="result">
+          <div class="result-label">Peak force</div>
+          <div id="peakOut" class="result-big">
+            33.0 kN
+          </div>
+        </div>
+
+        <div class="result">
+          <div class="result-label">Impulse</div>
+          <div id="impulseOut" class="result-big">
+            1050 N·s
+          </div>
+        </div>
+
+      </div>
+
+      <div id="explanation" class="explanation">
+        A rigid stop happens very quickly, so the force is large.
+      </div>
+
+    </section>
+
+    <!-- GRAPH -->
+    <section>
+
+      <div class="diagram">
+
+        <svg
+          viewBox="0 0 700 420"
+          role="img"
+          aria-label="Force-time graph showing a smooth collision pulse">
+
+          <!-- axis titles -->
+          <text
+            x="28"
+            y="205"
+            transform="rotate(-90 28 205)"
+            text-anchor="middle"
+            font-size="15"
+            font-weight="600"
+            fill="#202124">
+            Force (kN)
+          </text>
+
+          <text
+            x="390"
+            y="397"
+            text-anchor="middle"
+            font-size="15"
+            font-weight="600"
+            fill="#202124">
+            Time (s)
+          </text>
+
+          <!-- axes -->
+          <line
+            x1="110"
+            y1="345"
+            x2="655"
+            y2="345"
+            stroke="#333"
+            stroke-width="2"/>
+
+          <line
+            x1="110"
+            y1="55"
+            x2="110"
+            y2="345"
+            stroke="#333"
+            stroke-width="2"/>
+
+          <!-- horizontal grid -->
+          <line
+            x1="110"
+            y1="272.5"
+            x2="655"
+            y2="272.5"
+            stroke="#e3e3e3"
+            stroke-width="1"/>
+
+          <line
+            x1="110"
+            y1="200"
+            x2="655"
+            y2="200"
+            stroke="#e3e3e3"
+            stroke-width="1"/>
+
+          <line
+            x1="110"
+            y1="127.5"
+            x2="655"
+            y2="127.5"
+            stroke="#e3e3e3"
+            stroke-width="1"/>
+
+          <line
+            x1="110"
+            y1="55"
+            x2="655"
+            y2="55"
+            stroke="#e3e3e3"
+            stroke-width="1"/>
+
+          <!-- y tick labels -->
+          <text
+            x="94"
+            y="349"
+            text-anchor="end"
+            font-size="12"
+            fill="#666">
+            0
+          </text>
+
+          <text
+            x="94"
+            y="276.5"
+            text-anchor="end"
+            font-size="12"
+            fill="#666">
+            30
+          </text>
+
+          <text
+            x="94"
+            y="204"
+            text-anchor="end"
+            font-size="12"
+            fill="#666">
+            60
+          </text>
+
+          <text
+            x="94"
+            y="131.5"
+            text-anchor="end"
+            font-size="12"
+            fill="#666">
+            90
+          </text>
+
+          <text
+            x="94"
+            y="59"
+            text-anchor="end"
+            font-size="12"
+            fill="#666">
+            120
+          </text>
+
+          <!-- x tick labels -->
+          <text
+            x="110"
+            y="369"
+            text-anchor="middle"
+            font-size="12"
+            fill="#666">
+            0
+          </text>
+
+          <text
+            x="246.25"
+            y="369"
+            text-anchor="middle"
+            font-size="12"
+            fill="#666">
+            0.1
+          </text>
+
+          <text
+            x="382.5"
+            y="369"
+            text-anchor="middle"
+            font-size="12"
+            fill="#666">
+            0.2
+          </text>
+
+          <text
+            x="518.75"
+            y="369"
+            text-anchor="middle"
+            font-size="12"
+            fill="#666">
+            0.3
+          </text>
+
+          <text
+            x="655"
+            y="369"
+            text-anchor="middle"
+            font-size="12"
+            fill="#666">
+            0.4
+          </text>
+
+          <!-- pulse -->
+          <path
+            id="pulseFill"
+            d=""
+            fill="#4f78a8"
+            opacity="0.16">
+          </path>
+
+          <path
+            id="pulseLine"
+            d=""
+            fill="none"
+            stroke="#4f78a8"
+            stroke-width="4"
+            stroke-linecap="round">
+          </path>
+
+          <!-- fixed annotations -->
+          <text
+            x="390"
+            y="31"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600"
+            fill="#202124">
+            Peak force shown by curve height
+          </text>
+
+          <text
+            x="390"
+            y="325"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600"
+            fill="#202124">
+            Shaded area = impulse
+          </text>
+
+        </svg>
+
+      </div>
+
+      <div class="relationship">
+
+        <div class="relationship-top">
+
+          <span class="relationship-title">
+            Key idea
+          </span>
+
+          <span class="formula">
+            Impulse = Δp
+          </span>
+
+        </div>
+
+        <div id="calcText">
+          70 × 15 = 1050 N·s
+        </div>
+
+        <div class="key-point">
+          More momentum → larger area. Longer stopping time → lower peak force.
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="note">
+    The collision pulse is an idealised model. The occupant is assumed to come to rest.
+  </div>
+
+</div>
+
+<script>
+(() => {
+
+  const mass =
+    document.getElementById("mass");
+
+  const speed =
+    document.getElementById("speed");
+
+  const massOut =
+    document.getElementById("massOut");
+
+  const speedOut =
+    document.getElementById("speedOut");
+
+  const peakOut =
+    document.getElementById("peakOut");
+
+  const impulseOut =
+    document.getElementById("impulseOut");
+
+  const explanation =
+    document.getElementById("explanation");
+
+  const calcText =
+    document.getElementById("calcText");
+
+  const pulseLine =
+    document.getElementById("pulseLine");
+
+  const pulseFill =
+    document.getElementById("pulseFill");
+
+  const buttons =
+    [...document.querySelectorAll("[data-mode]")];
+
+  let mode =
+    "rigid";
+
+  const modes = {
+
+    rigid: {
+      dt: 0.05,
+      text:
+        "A rigid stop happens very quickly, so the force is large."
+    },
+
+    belt: {
+      dt: 0.15,
+      text:
+        "A seatbelt increases stopping time, reducing the force on the occupant."
+    },
+
+    airbag: {
+      dt: 0.35,
+      text:
+        "An airbag increases stopping time further, reducing the peak force even more."
+    }
+
+  };
+
+  const left = 110;
+  const right = 655;
+  const top = 55;
+  const base = 345;
+
+  const maxTime =
+    0.40;
+
+  const maxForce =
+    120000;
+
+  function xScale(t) {
+
+    return (
+      left +
+      (t / maxTime) *
+      (right - left)
+    );
+
+  }
+
+  function yScale(force) {
+
+    const clamped =
+      Math.min(force, maxForce);
+
+    return (
+      base -
+      (clamped / maxForce) *
+      (base - top)
+    );
+
+  }
+
+  function makePulse(dt, peak) {
+
+    const steps =
+      120;
+
+    let path =
+      "";
+
+    for (
+      let i = 0;
+      i <= steps;
+      i++
+    ) {
+
+      const t =
+        dt * i / steps;
+
+      const force =
+        peak *
+        Math.sin(
+          Math.PI * t / dt
+        );
+
+      const x =
+        xScale(t);
+
+      const y =
+        yScale(force);
+
+      path +=
+        (i === 0 ? "M" : "L") +
+        x.toFixed(1) +
+        "," +
+        y.toFixed(1) +
+        " ";
+
+    }
+
+    return path.trim();
+
+  }
+
+  function update() {
+
+    const m =
+      Number(mass.value);
+
+    const v =
+      Number(speed.value);
+
+    const dt =
+      modes[mode].dt;
+
+    const impulse =
+      m * v;
+
+    const peak =
+      Math.PI *
+      impulse /
+      (2 * dt);
+
+    const linePath =
+      makePulse(
+        dt,
+        peak
+      );
+
+    const endX =
+      xScale(dt);
+
+    const fillPath =
+      linePath +
+      " L" +
+      endX.toFixed(1) +
+      "," +
+      base +
+      " L" +
+      left +
+      "," +
+      base +
+      " Z";
+
+    massOut.textContent =
+      m.toFixed(0);
+
+    speedOut.textContent =
+      v.toFixed(0);
+
+    peakOut.textContent =
+      (peak / 1000).toFixed(1) +
+      " kN";
+
+    impulseOut.textContent =
+      Math.round(impulse) +
+      " N·s";
+
+    explanation.textContent =
+      modes[mode].text;
+
+    calcText.textContent =
+      m.toFixed(0) +
+      " × " +
+      v.toFixed(0) +
+      " = " +
+      Math.round(impulse) +
+      " N·s";
+
+    pulseLine.setAttribute(
+      "d",
+      linePath
+    );
+
+    pulseFill.setAttribute(
+      "d",
+      fillPath
+    );
+
+    buttons.forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.mode === mode
+      );
+
+    });
+
+  }
+
+  buttons.forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        mode =
+          button.dataset.mode;
+
+        update();
+
+      }
+    );
+
+  });
+
+  mass.addEventListener(
+    "input",
+    update
+  );
+
+  speed.addEventListener(
+    "input",
+    update
+  );
+
+  update();
+
+})();
+</script>
+
+</body>
+</html>
