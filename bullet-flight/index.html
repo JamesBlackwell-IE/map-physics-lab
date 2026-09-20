@@ -211,12 +211,15 @@
   }
 
   @media (max-width: 860px) {
+
     .layout {
       grid-template-columns: 1fr;
     }
+
   }
 
   @media (max-width: 540px) {
+
     .buttons,
     .buttons.motion,
     .state-grid {
@@ -226,6 +229,7 @@
     h1 {
       font-size: 1.65rem;
     }
+
   }
 
 </style>
@@ -243,9 +247,10 @@
     Explore how a spinning projectile can undergo slow precession and faster nutation while remaining stable, and how growing angular motion can eventually lead to tumbling.
   </p>
 
+
   <div class="layout">
 
-    <!-- LEFT PANEL -->
+    <!-- CONTROLS -->
     <section class="panel">
 
       <div class="control-title">
@@ -352,9 +357,7 @@
             Flight state
           </div>
 
-          <div
-            id="flightState"
-            class="state-value">
+          <div id="flightState" class="state-value">
             Stable precession
           </div>
 
@@ -367,9 +370,7 @@
             Angular deviation
           </div>
 
-          <div
-            id="currentAngle"
-            class="state-value">
+          <div id="currentAngle" class="state-value">
             8.0°
           </div>
 
@@ -410,16 +411,15 @@
     </section>
 
 
-    <!-- RIGHT PANEL -->
+    <!-- VISUAL -->
     <section>
 
       <div class="visual-card">
 
         <svg
-          id="mainSvg"
           viewBox="0 0 800 560"
           role="img"
-          aria-label="Projectile showing spin, precession, nutation and tumbling">
+          aria-label="Projectile showing spin, precession, nutation and a smooth transition into tumbling">
 
           <!-- TITLES -->
           <text
@@ -467,37 +467,39 @@
           </text>
 
 
-          <!-- MAIN TRACE -->
-          <polyline
-            id="mainTrace"
-            points=""
-            fill="none"
-            stroke="#c46d54"
-            stroke-width="2.5"
-            stroke-linejoin="round"
-            stroke-linecap="round"
-            opacity="0.82">
-          </polyline>
+          <!-- MAIN ANGULAR-MOTION GROUP -->
+          <g id="mainMotionGroup">
 
+            <polyline
+              id="mainTrace"
+              points=""
+              fill="none"
+              stroke="#c46d54"
+              stroke-width="2.5"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              opacity="0.82">
+            </polyline>
 
-          <!-- PROJECTILE AXIS -->
-          <line
-            id="mainAxis"
-            x1="210"
-            y1="277"
-            x2="370"
-            y2="260"
-            stroke="#315f86"
-            stroke-width="3">
-          </line>
+            <line
+              id="mainAxis"
+              x1="210"
+              y1="277"
+              x2="370"
+              y2="260"
+              stroke="#315f86"
+              stroke-width="3">
+            </line>
 
-          <circle
-            id="mainTip"
-            cx="370"
-            cy="260"
-            r="5"
-            fill="#315f86">
-          </circle>
+            <circle
+              id="mainTip"
+              cx="370"
+              cy="260"
+              r="5"
+              fill="#315f86">
+            </circle>
+
+          </g>
 
 
           <!-- PROJECTILE -->
@@ -551,6 +553,7 @@
 
           <!-- SPIN LABEL -->
           <text
+            id="spinLabel"
             x="165"
             y="205"
             text-anchor="middle"
@@ -562,90 +565,89 @@
 
 
           <!-- END-ON VIEW -->
-          <circle
-            cx="650"
-            cy="330"
-            r="100"
-            fill="#fafafa"
-            stroke="#ddd"
-            stroke-width="2">
-          </circle>
+          <g id="endOnGroup">
+
+            <circle
+              cx="650"
+              cy="330"
+              r="100"
+              fill="#fafafa"
+              stroke="#ddd"
+              stroke-width="2">
+            </circle>
 
 
-          <!-- PURE PRECESSION REFERENCE -->
-          <circle
-            id="precessionReference"
-            cx="650"
-            cy="330"
-            r="44"
-            fill="none"
-            stroke="#aab4be"
-            stroke-width="2"
-            stroke-dasharray="6 6">
-          </circle>
+            <circle
+              id="precessionReference"
+              cx="650"
+              cy="330"
+              r="44"
+              fill="none"
+              stroke="#aab4be"
+              stroke-width="2"
+              stroke-dasharray="6 6">
+            </circle>
 
 
-          <!-- ROSETTE TRACE -->
-          <polyline
-            id="endTrace"
-            points=""
-            fill="none"
-            stroke="#607fa2"
-            stroke-width="2.6"
-            stroke-linejoin="round"
-            stroke-linecap="round"
-            opacity="0.82">
-          </polyline>
+            <polyline
+              id="endTrace"
+              points=""
+              fill="none"
+              stroke="#607fa2"
+              stroke-width="2.6"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              opacity="0.82">
+            </polyline>
 
 
-          <!-- FLIGHT DIRECTION CENTRE -->
-          <circle
-            cx="650"
-            cy="330"
-            r="5"
-            fill="#555">
-          </circle>
+            <circle
+              cx="650"
+              cy="330"
+              r="5"
+              fill="#555">
+            </circle>
 
 
-          <!-- CURRENT AXIS -->
-          <line
-            id="endAxis"
-            x1="650"
-            y1="330"
-            x2="694"
-            y2="330"
-            stroke="#315f86"
-            stroke-width="4"
-            stroke-linecap="round">
-          </line>
+            <line
+              id="endAxis"
+              x1="650"
+              y1="330"
+              x2="694"
+              y2="330"
+              stroke="#315f86"
+              stroke-width="4"
+              stroke-linecap="round">
+            </line>
 
-          <circle
-            id="endTip"
-            cx="694"
-            cy="330"
-            r="7"
-            fill="#315f86">
-          </circle>
+            <circle
+              id="endTip"
+              cx="694"
+              cy="330"
+              r="7"
+              fill="#315f86">
+            </circle>
 
 
-          <!-- END-ON LABELS -->
-          <text
-            x="650"
-            y="458"
-            text-anchor="middle"
-            font-size="11"
-            fill="#666">
-            centre = direction of travel
-          </text>
+            <text
+              x="650"
+              y="458"
+              text-anchor="middle"
+              font-size="11"
+              fill="#666">
+              centre = direction of travel
+            </text>
 
-          <text
-            x="650"
-            y="476"
-            text-anchor="middle"
-            font-size="11"
-            fill="#666">
-            blue trace = motion of projectile axis
-          </text>
+            <text
+              x="650"
+              y="476"
+              text-anchor="middle"
+              font-size="11"
+              fill="#666">
+              blue trace = motion of projectile axis
+            </text>
+
+          </g>
 
 
           <!-- TUMBLE MESSAGE -->
@@ -697,7 +699,7 @@
 
 
         <div class="visual-caption">
-          The end-on trace combines a slower precessional rotation with a faster, smaller nutational motion. With nutation switched off, the trace becomes a simple circle.
+          The end-on trace combines a slower precessional mode with a faster, smaller nutational mode. In unstable flight, the angular motion grows and gradually transitions into tumbling.
         </div>
 
       </div>
@@ -706,7 +708,7 @@
       <div class="concept-card">
 
         <div class="concept-title">
-          Two angular motions are superimposed
+          From stable angular motion to tumbling
         </div>
 
         <p>
@@ -714,15 +716,15 @@
         </p>
 
         <p>
-          <strong>Nutation</strong> is a smaller, faster angular motion superimposed on that precession. Together they can produce the characteristic looping or rosette-like path of the projectile axis.
+          <strong>Nutation</strong> is a smaller, faster angular mode superimposed on the precession. Together they produce the looping or rosette-like path in the end-on view.
         </p>
 
         <p>
-          Switching nutation off leaves only the slow precessional mode, so the end-on trace becomes a simple circular orbit.
+          During unstable flight, the angular excursion grows. The projectile progressively loses its nose-forward orientation before entering continuous end-over-end tumbling.
         </p>
 
         <div class="take-home">
-          Nutation is not simply a change in the radius of precession. It is a second angular mode superimposed on the precessional motion.
+          Yaw, precession and nutation can all occur during stable flight. Instability occurs when the angular motion grows rather than remaining bounded.
         </div>
 
       </div>
@@ -733,7 +735,7 @@
 
 
   <div class="note">
-    This is a conceptual teaching model. The relative frequencies and amplitudes are deliberately chosen to make the two angular modes easy to distinguish and are not intended to represent a specific projectile.
+    This is a conceptual teaching model. The relative frequencies, amplitudes and transition times are deliberately chosen to make the different angular motions easy to distinguish and do not represent a specific projectile.
   </div>
 
 </div>
@@ -779,6 +781,12 @@
   const spinDot =
     document.getElementById("spinDot");
 
+  const spinLabel =
+    document.getElementById("spinLabel");
+
+  const mainMotionGroup =
+    document.getElementById("mainMotionGroup");
+
   const mainAxis =
     document.getElementById("mainAxis");
 
@@ -787,6 +795,9 @@
 
   const mainTrace =
     document.getElementById("mainTrace");
+
+  const endOnGroup =
+    document.getElementById("endOnGroup");
 
   const endAxis =
     document.getElementById("endAxis");
@@ -804,9 +815,15 @@
     document.getElementById("tumbleNotice");
 
 
-  let stability = "stable";
-  let running = true;
-  let nutationOn = true;
+  let stability =
+    "stable";
+
+  let running =
+    true;
+
+  let nutationOn =
+    true;
+
 
   let startTime =
     performance.now();
@@ -818,15 +835,14 @@
   let mainTracePoints = [];
   let endTracePoints = [];
 
-  let lastTraceTime = 0;
+  let lastTraceTime =
+    0;
 
 
   /*
-    Conceptual angular frequencies.
+    Conceptual angular rates.
 
-    Nutation is deliberately faster than
-    precession so that the smaller loops
-    are visible.
+    Nutation is faster than precession.
   */
 
   const omegaP =
@@ -839,19 +855,33 @@
     0.014;
 
 
-  const tumbleStartSeconds =
-    9;
+  /*
+    Smooth instability-to-tumble transition.
+  */
+
+  const transitionStart =
+    7.5;
+
+  const transitionEnd =
+    9.5;
 
 
   /*
     Main-view geometry.
   */
 
-  const baseX = 210;
-  const baseY = 277;
+  const baseX =
+    210;
 
-  const flightEndX = 520;
-  const flightEndY = 245;
+  const baseY =
+    277;
+
+  const flightEndX =
+    520;
+
+  const flightEndY =
+    245;
+
 
   const dx =
     flightEndX - baseX;
@@ -859,11 +889,13 @@
   const dy =
     flightEndY - baseY;
 
+
   const flightLength =
     Math.hypot(
       dx,
       dy
     );
+
 
   const ux =
     dx / flightLength;
@@ -871,10 +903,6 @@
   const uy =
     dy / flightLength;
 
-
-  /*
-    Perpendicular direction on screen.
-  */
 
   const px =
     -uy;
@@ -917,14 +945,29 @@
 
   function resetAnimation() {
 
-    pausedElapsed = 0;
+    pausedElapsed =
+      0;
 
     startTime =
       performance.now();
 
-    lastTraceTime = 0;
+    lastTraceTime =
+      0;
 
     clearTraces();
+
+  }
+
+
+  function clamp01(x) {
+
+    return Math.max(
+      0,
+      Math.min(
+        1,
+        x
+      )
+    );
 
   }
 
@@ -932,13 +975,7 @@
   function smoothstep(x) {
 
     const t =
-      Math.max(
-        0,
-        Math.min(
-          1,
-          x
-        )
-      );
+      clamp01(x);
 
     return (
       t *
@@ -983,16 +1020,22 @@
     }
 
 
+    /*
+      Unstable mode:
+      yaw progressively grows before
+      tumbling becomes dominant.
+    */
+
     const growth =
       smoothstep(
         seconds /
-        tumbleStartSeconds
+        transitionEnd
       );
 
 
     return (
       selectedYaw +
-      (32 - selectedYaw) *
+      (34 - selectedYaw) *
       growth
     );
 
@@ -1012,11 +1055,6 @@
       t: elapsed
     });
 
-
-    /*
-      Keep approximately six seconds
-      of history.
-    */
 
     const windowMs =
       6000;
@@ -1075,7 +1113,7 @@
 
 
     /*
-      Slow precessional mode.
+      Angular modes.
     */
 
     const phaseP =
@@ -1083,19 +1121,10 @@
       elapsed;
 
 
-    /*
-      Faster nutational mode.
-    */
-
     const phaseN =
       omegaN *
       elapsed;
 
-
-    /*
-      Stability changes the amplitude
-      of the slow precession mode.
-    */
 
     const ApDegrees =
       meanYaw(
@@ -1109,10 +1138,8 @@
 
 
     /*
-      SUPERPOSITION OF MODES
-
-      These x/y coordinates describe
-      the projectile axis in angular space.
+      Superposition of slow precessional
+      and faster nutational modes.
     */
 
     const angularX =
@@ -1144,240 +1171,395 @@
       );
 
 
-    const tumbling =
-      stability === "unstable" &&
-      seconds >=
-      tumbleStartSeconds;
+    /*
+      End-on coordinates.
+    */
+
+    const endScale =
+      2.6;
+
+
+    const endX =
+      650 +
+      angularX *
+      endScale;
+
+
+    const endY =
+      330 +
+      angularY *
+      endScale;
 
 
     /*
-      PRECESSION + NUTATION
+      Main-view projection.
     */
 
-    if (!tumbling) {
+    const longitudinalX =
+      baseX +
+      axisLength *
+      ux;
 
 
-      /*
-        END-ON VIEW
-
-        Angular x and y map directly to
-        screen displacement.
-      */
-
-      const endScale =
-        2.6;
+    const longitudinalY =
+      baseY +
+      axisLength *
+      uy;
 
 
-      const endX =
-        650 +
-        angularX *
-        endScale;
+    const mainScale =
+      3.0;
 
 
-      const endY =
-        330 +
-        angularY *
-        endScale;
+    const depthScale =
+      0.42;
 
 
-      endAxis.setAttribute(
-        "x1",
-        "650"
-      );
-
-      endAxis.setAttribute(
-        "y1",
-        "330"
-      );
-
-      endAxis.setAttribute(
-        "x2",
-        endX.toFixed(1)
-      );
-
-      endAxis.setAttribute(
-        "y2",
-        endY.toFixed(1)
-      );
+    const tipX =
+      longitudinalX +
+      angularY *
+      mainScale *
+      px +
+      angularX *
+      mainScale *
+      depthScale *
+      ux;
 
 
-      endTip.setAttribute(
-        "cx",
-        endX.toFixed(1)
-      );
-
-      endTip.setAttribute(
-        "cy",
-        endY.toFixed(1)
-      );
-
-
-      /*
-        Dashed reference circle shows
-        the slow precession radius.
-      */
-
-      precessionReference.setAttribute(
-        "r",
-        Math.max(
-          6,
-          ApDegrees *
-          endScale
-        ).toFixed(1)
-      );
+    const tipY =
+      longitudinalY +
+      angularY *
+      mainScale *
+      py +
+      angularX *
+      mainScale *
+      depthScale *
+      uy;
 
 
-      /*
-        MAIN VIEW
+    /*
+      Orientation generated by the
+      precession/nutation motion.
+    */
 
-        Project the same angular motion
-        into a pseudo-3D side view.
-      */
-
-      const longitudinalX =
-        baseX +
-        axisLength *
-        ux;
-
-      const longitudinalY =
-        baseY +
-        axisLength *
-        uy;
+    const precessionAngle =
+      Math.atan2(
+        tipY - baseY,
+        tipX - baseX
+      ) *
+      180 /
+      Math.PI;
 
 
-      /*
-        angularY controls vertical displacement.
+    /*
+      Smooth transition coefficient.
 
-        angularX contributes a smaller
-        apparent depth displacement.
-      */
+      0 = pure precession/nutation
+      1 = full tumbling
+    */
 
-      const mainScale =
-        3.0;
-
-
-      const depthScale =
-        0.42;
+    let transition =
+      0;
 
 
-      const tipX =
-        longitudinalX +
-        angularY *
-        mainScale *
-        px +
-        angularX *
-        mainScale *
-        depthScale *
-        ux;
+    if (
+      stability === "unstable"
+    ) {
 
-
-      const tipY =
-        longitudinalY +
-        angularY *
-        mainScale *
-        py +
-        angularX *
-        mainScale *
-        depthScale *
-        uy;
-
-
-      mainAxis.setAttribute(
-        "x1",
-        baseX.toFixed(1)
-      );
-
-      mainAxis.setAttribute(
-        "y1",
-        baseY.toFixed(1)
-      );
-
-      mainAxis.setAttribute(
-        "x2",
-        tipX.toFixed(1)
-      );
-
-      mainAxis.setAttribute(
-        "y2",
-        tipY.toFixed(1)
-      );
-
-
-      mainTip.setAttribute(
-        "cx",
-        tipX.toFixed(1)
-      );
-
-      mainTip.setAttribute(
-        "cy",
-        tipY.toFixed(1)
-      );
-
-
-      /*
-        Orient the projectile along the
-        instantaneous axis.
-      */
-
-      const projectileAngle =
-        Math.atan2(
-          tipY - baseY,
-          tipX - baseX
-        ) *
-        180 /
-        Math.PI;
-
-
-      projectile.setAttribute(
-        "transform",
-        "translate(" +
-        baseX +
-        " " +
-        baseY +
-        ") rotate(" +
-        projectileAngle.toFixed(2) +
-        ")"
-      );
-
-
-      /*
-        SPIN
-
-        Marker moves around the small
-        elliptical ring around the body.
-      */
-
-      const spinPhase =
-        omegaSpin *
-        elapsed;
-
-
-      spinDot.setAttribute(
-        "cx",
-        (
-          -15 +
-          14 *
-          Math.cos(
-            spinPhase
+      transition =
+        smoothstep(
+          (
+            seconds -
+            transitionStart
+          ) /
+          (
+            transitionEnd -
+            transitionStart
           )
-        ).toFixed(1)
+        );
+
+    }
+
+
+    /*
+      Continuous tumble target.
+
+      Importantly, the tumble starts from
+      approximately the orientation already
+      reached by the unstable projectile.
+    */
+
+    const tumbleElapsed =
+      Math.max(
+        0,
+        seconds -
+        transitionStart
       );
 
 
-      spinDot.setAttribute(
-        "cy",
-        (
-          25 *
-          Math.sin(
-            spinPhase
-          )
-        ).toFixed(1)
+    const tumbleRate =
+      125;
+
+
+    /*
+      Calculate the unstable orientation at
+      the start of transition so the tumble
+      begins from a sensible angle.
+    */
+
+    const transitionElapsed =
+      transitionStart *
+      1000;
+
+
+    const transitionPhaseP =
+      omegaP *
+      transitionElapsed;
+
+
+    const transitionPhaseN =
+      omegaN *
+      transitionElapsed;
+
+
+    const transitionYaw =
+      meanYaw(
+        selectedYaw,
+        transitionStart
       );
 
 
-      /*
-        Trace history.
-      */
+    const transitionAngularX =
+      transitionYaw *
+      Math.cos(
+        transitionPhaseP
+      ) +
+      AnDegrees *
+      Math.cos(
+        transitionPhaseN
+      );
+
+
+    const transitionAngularY =
+      transitionYaw *
+      Math.sin(
+        transitionPhaseP
+      ) +
+      AnDegrees *
+      Math.sin(
+        transitionPhaseN
+      );
+
+
+    const transitionTipX =
+      longitudinalX +
+      transitionAngularY *
+      mainScale *
+      px +
+      transitionAngularX *
+      mainScale *
+      depthScale *
+      ux;
+
+
+    const transitionTipY =
+      longitudinalY +
+      transitionAngularY *
+      mainScale *
+      py +
+      transitionAngularX *
+      mainScale *
+      depthScale *
+      uy;
+
+
+    const transitionAngle =
+      Math.atan2(
+        transitionTipY - baseY,
+        transitionTipX - baseX
+      ) *
+      180 /
+      Math.PI;
+
+
+    const tumbleAngle =
+      transitionAngle +
+      tumbleRate *
+      tumbleElapsed;
+
+
+    /*
+      Blend smoothly between the
+      unstable orientation and tumble.
+    */
+
+    const displayedAngle =
+      (
+        1 -
+        transition
+      ) *
+      precessionAngle +
+      transition *
+      tumbleAngle;
+
+
+    projectile.setAttribute(
+      "transform",
+      "translate(" +
+      baseX +
+      " " +
+      baseY +
+      ") rotate(" +
+      displayedAngle.toFixed(2) +
+      ")"
+    );
+
+
+    /*
+      SPIN INDICATOR
+
+      Fade it as full tumbling develops.
+    */
+
+    const spinPhase =
+      omegaSpin *
+      elapsed;
+
+
+    spinDot.setAttribute(
+      "cx",
+      (
+        -15 +
+        14 *
+        Math.cos(
+          spinPhase
+        )
+      ).toFixed(1)
+    );
+
+
+    spinDot.setAttribute(
+      "cy",
+      (
+        25 *
+        Math.sin(
+          spinPhase
+        )
+      ).toFixed(1)
+    );
+
+
+    spinDot.setAttribute(
+      "opacity",
+      (
+        1 -
+        transition
+      ).toFixed(2)
+    );
+
+
+    spinLabel.setAttribute(
+      "opacity",
+      (
+        1 -
+        transition
+      ).toFixed(2)
+    );
+
+
+    /*
+      END-ON VIEW
+    */
+
+    endAxis.setAttribute(
+      "x1",
+      "650"
+    );
+
+    endAxis.setAttribute(
+      "y1",
+      "330"
+    );
+
+    endAxis.setAttribute(
+      "x2",
+      endX.toFixed(1)
+    );
+
+    endAxis.setAttribute(
+      "y2",
+      endY.toFixed(1)
+    );
+
+
+    endTip.setAttribute(
+      "cx",
+      endX.toFixed(1)
+    );
+
+    endTip.setAttribute(
+      "cy",
+      endY.toFixed(1)
+    );
+
+
+    precessionReference.setAttribute(
+      "r",
+      Math.max(
+        6,
+        ApDegrees *
+        endScale
+      ).toFixed(1)
+    );
+
+
+    /*
+      MAIN AXIS
+    */
+
+    mainAxis.setAttribute(
+      "x1",
+      baseX.toFixed(1)
+    );
+
+    mainAxis.setAttribute(
+      "y1",
+      baseY.toFixed(1)
+    );
+
+    mainAxis.setAttribute(
+      "x2",
+      tipX.toFixed(1)
+    );
+
+    mainAxis.setAttribute(
+      "y2",
+      tipY.toFixed(1)
+    );
+
+
+    mainTip.setAttribute(
+      "cx",
+      tipX.toFixed(1)
+    );
+
+    mainTip.setAttribute(
+      "cy",
+      tipY.toFixed(1)
+    );
+
+
+    /*
+      TRACES
+
+      Keep drawing during the early
+      transition, then fade progressively.
+    */
+
+    if (
+      transition <
+      0.92
+    ) {
 
       if (
         elapsed -
@@ -1406,150 +1588,111 @@
 
       }
 
-
-      mainTrace.setAttribute(
-        "points",
-        pointString(
-          mainTracePoints
-        )
-      );
-
-
-      endTrace.setAttribute(
-        "points",
-        pointString(
-          endTracePoints
-        )
-      );
-
-
-      tumbleNotice.setAttribute(
-        "opacity",
-        "0"
-      );
-
     }
 
 
+    mainTrace.setAttribute(
+      "points",
+      pointString(
+        mainTracePoints
+      )
+    );
+
+
+    endTrace.setAttribute(
+      "points",
+      pointString(
+        endTracePoints
+      )
+    );
+
+
     /*
-      TUMBLING
+      Fade angular-motion graphics during
+      transition into full tumbling.
     */
 
-    else {
-
-      const tumbleElapsed =
-        seconds -
-        tumbleStartSeconds;
+    const motionOpacity =
+      1 -
+      transition;
 
 
-      const tumbleRate =
-        125;
+    mainMotionGroup.setAttribute(
+      "opacity",
+      motionOpacity.toFixed(2)
+    );
 
 
-      const tumbleAngle =
-        -10 +
-        tumbleRate *
-        tumbleElapsed;
+    endOnGroup.setAttribute(
+      "opacity",
+      motionOpacity.toFixed(2)
+    );
 
 
-      projectile.setAttribute(
-        "transform",
-        "translate(" +
-        baseX +
-        " " +
-        baseY +
-        ") rotate(" +
-        tumbleAngle.toFixed(2) +
-        ")"
+    /*
+      Tumble notice fades in only once
+      tumbling is becoming dominant.
+    */
+
+    const noticeOpacity =
+      smoothstep(
+        (
+          transition -
+          0.45
+        ) /
+        0.55
       );
 
+
+    tumbleNotice.setAttribute(
+      "opacity",
+      noticeOpacity.toFixed(2)
+    );
+
+
+    /*
+      Once transition is fully complete,
+      clear old traces.
+    */
+
+    if (
+      transition >=
+      0.999
+    ) {
 
       clearTraces();
 
-
-      mainAxis.setAttribute(
-        "x1",
-        baseX
-      );
-
-      mainAxis.setAttribute(
-        "y1",
-        baseY
-      );
-
-      mainAxis.setAttribute(
-        "x2",
-        baseX
-      );
-
-      mainAxis.setAttribute(
-        "y2",
-        baseY
-      );
-
-
-      mainTip.setAttribute(
-        "cx",
-        baseX
-      );
-
-      mainTip.setAttribute(
-        "cy",
-        baseY
-      );
-
-
-      endAxis.setAttribute(
-        "x1",
-        "650"
-      );
-
-      endAxis.setAttribute(
-        "y1",
-        "330"
-      );
-
-      endAxis.setAttribute(
-        "x2",
-        "650"
-      );
-
-      endAxis.setAttribute(
-        "y2",
-        "330"
-      );
-
-
-      endTip.setAttribute(
-        "cx",
-        "650"
-      );
-
-      endTip.setAttribute(
-        "cy",
-        "330"
-      );
-
-
-      tumbleNotice.setAttribute(
-        "opacity",
-        "1"
-      );
-
     }
 
 
     /*
-      STATUS
+      STATUS TEXT
     */
 
-    if (tumbling) {
+    if (
+      transition >=
+      0.95
+    ) {
 
       flightState.textContent =
         "Tumbling";
 
       currentAngle.textContent =
         "Large / unbounded";
+
+    }
+
+    else if (
+      transition >
+      0.05
+    ) {
+
+      flightState.textContent =
+        "Losing stability";
+
+      currentAngle.textContent =
+        angularMagnitude.toFixed(1) +
+        "°";
 
     }
 
@@ -1665,7 +1808,8 @@
           performance.now() -
           startTime;
 
-        running = false;
+        running =
+          false;
 
         playButton.textContent =
           "Play";
@@ -1681,7 +1825,8 @@
         startTime =
           performance.now();
 
-        running = true;
+        running =
+          true;
 
         playButton.textContent =
           "Pause";
