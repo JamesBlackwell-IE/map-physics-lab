@@ -20,7 +20,7 @@
   }
 
   .page {
-    max-width: 1150px;
+    max-width: 1160px;
     margin: 0 auto;
     padding: 28px 20px 50px;
   }
@@ -44,13 +44,13 @@
   .subtitle {
     margin: 0 0 28px;
     color: #666;
-    max-width: 820px;
+    max-width: 850px;
     line-height: 1.45;
   }
 
   .layout {
     display: grid;
-    grid-template-columns: 0.78fr 1.22fr;
+    grid-template-columns: 0.8fr 1.2fr;
     gap: 28px;
     align-items: start;
   }
@@ -88,9 +88,13 @@
 
   .buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     margin-top: 10px;
+  }
+
+  .buttons.two {
+    grid-template-columns: 1fr 1fr;
   }
 
   button {
@@ -100,7 +104,7 @@
     padding: 10px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.93rem;
+    font-size: 0.92rem;
   }
 
   button:hover {
@@ -113,15 +117,34 @@
     font-weight: 600;
   }
 
+  .state-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f8fafb;
+  }
+
+  .state-label {
+    color: #666;
+    font-size: 0.85rem;
+  }
+
+  .state-value {
+    margin-top: 3px;
+    font-size: 1.08rem;
+    font-weight: 700;
+  }
+
   .definitions {
     margin-top: 22px;
   }
 
   .definition {
-    padding: 12px 0;
+    padding: 11px 0;
     border-top: 1px solid #e4e4e4;
     line-height: 1.42;
-    font-size: 0.93rem;
+    font-size: 0.92rem;
   }
 
   .definition:first-child {
@@ -181,7 +204,7 @@
     font-size: 0.88rem;
   }
 
-  @media (max-width: 840px) {
+  @media (max-width: 850px) {
 
     .layout {
       grid-template-columns: 1fr;
@@ -189,9 +212,10 @@
 
   }
 
-  @media (max-width: 520px) {
+  @media (max-width: 540px) {
 
-    .buttons {
+    .buttons,
+    .buttons.two {
       grid-template-columns: 1fr;
     }
 
@@ -210,12 +234,11 @@
 
   <a class="back" href="../">← MAP Physics Lab</a>
 
-  <h1>Bullet Flight: Yaw, Precession &amp; Nutation</h1>
+  <h1>Bullet Flight: Stability, Yaw &amp; Tumbling</h1>
 
   <p class="subtitle">
-    Explore how a spinning projectile can remain pointed close to its direction of travel while its axis undergoes yaw, precession and nutation.
+    Explore how spin stabilises a projectile, how yaw can remain bounded during stable flight, and how increasing angular motion can lead to tumbling.
   </p>
-
 
   <div class="layout">
 
@@ -223,7 +246,7 @@
     <section class="panel">
 
       <div class="control-title">
-        Yaw angle
+        Initial yaw angle
       </div>
 
       <input
@@ -231,11 +254,11 @@
         type="range"
         min="0"
         max="20"
-        value="10"
+        value="8"
         step="1">
 
       <div class="value">
-        <span id="yawValue">10</span>°
+        <span id="yawValue">8</span>°
       </div>
 
 
@@ -248,11 +271,39 @@
         type="range"
         min="0"
         max="6"
-        value="3"
+        value="2"
         step="0.5">
 
       <div class="value">
-        ±<span id="nutationValue">3.0</span>°
+        ±<span id="nutationValue">2.0</span>°
+      </div>
+
+
+      <div class="control-title">
+        Flight stability
+      </div>
+
+      <div class="buttons">
+
+        <button
+          type="button"
+          data-stability="stable"
+          class="active">
+          Stable
+        </button>
+
+        <button
+          type="button"
+          data-stability="marginal">
+          Marginal
+        </button>
+
+        <button
+          type="button"
+          data-stability="unstable">
+          Unstable
+        </button>
+
       </div>
 
 
@@ -260,7 +311,7 @@
         Motion
       </div>
 
-      <div class="buttons">
+      <div class="buttons two">
 
         <button
           id="playButton"
@@ -279,6 +330,19 @@
       </div>
 
 
+      <div class="state-box">
+
+        <div class="state-label">
+          Flight state
+        </div>
+
+        <div id="flightState" class="state-value">
+          Stable precession
+        </div>
+
+      </div>
+
+
       <div class="definitions">
 
         <div class="definition">
@@ -288,17 +352,22 @@
 
         <div class="definition">
           <strong>Yaw</strong>
-          The angle between the bullet's longitudinal axis and its direction of travel.
+          The angle between the projectile axis and its direction of travel.
         </div>
 
         <div class="definition">
           <strong>Precession</strong>
-          The bullet axis slowly rotates around the direction-of-travel axis, tracing a cone.
+          Rotation of the projectile axis around the direction of travel.
         </div>
 
         <div class="definition">
           <strong>Nutation</strong>
           A smaller oscillation superimposed on the precessional motion.
+        </div>
+
+        <div class="definition">
+          <strong>Tumbling</strong>
+          Large angular motion in which the projectile no longer remains approximately nose-forward.
         </div>
 
       </div>
@@ -312,24 +381,23 @@
       <div class="visual-card">
 
         <svg
-          id="mainSvg"
           viewBox="0 0 760 500"
           role="img"
-          aria-label="Animated conceptual diagram of bullet spin, yaw, precession and nutation">
+          aria-label="Animated conceptual diagram showing projectile stability, yaw, precession, nutation and tumbling">
 
-          <!-- MAIN TITLE -->
+          <!-- TITLE -->
           <text
             x="380"
-            y="27"
+            y="28"
             text-anchor="middle"
             font-size="14"
             font-weight="600"
             fill="#202124">
-            Direction of travel and projectile axis
+            Projectile orientation during flight
           </text>
 
 
-          <!-- FLIGHT AXIS -->
+          <!-- FLIGHT DIRECTION -->
           <line
             x1="75"
             y1="245"
@@ -353,46 +421,50 @@
           </text>
 
 
-          <!-- PRECESSION CONE -->
-          <path
-            d="M275 245 L570 188"
-            fill="none"
-            stroke="#aab4be"
-            stroke-width="2"
-            stroke-dasharray="7 7"/>
+          <!-- REFERENCE CONE -->
+          <g id="coneGroup">
 
-          <path
-            d="M275 245 L570 302"
-            fill="none"
-            stroke="#aab4be"
-            stroke-width="2"
-            stroke-dasharray="7 7"/>
+            <path
+              id="coneTop"
+              d="M275 245 L570 200"
+              fill="none"
+              stroke="#aab4be"
+              stroke-width="2"
+              stroke-dasharray="7 7"/>
 
-          <ellipse
-            cx="570"
-            cy="245"
-            rx="12"
-            ry="57"
-            fill="none"
-            stroke="#aab4be"
-            stroke-width="2"
-            stroke-dasharray="6 6"/>
+            <path
+              id="coneBottom"
+              d="M275 245 L570 290"
+              fill="none"
+              stroke="#aab4be"
+              stroke-width="2"
+              stroke-dasharray="7 7"/>
+
+            <ellipse
+              id="coneEnd"
+              cx="570"
+              cy="245"
+              rx="12"
+              ry="45"
+              fill="none"
+              stroke="#aab4be"
+              stroke-width="2"
+              stroke-dasharray="6 6"/>
+
+          </g>
 
 
-          <!-- PROJECTILE ASSEMBLY -->
+          <!-- PROJECTILE -->
           <g id="projectile">
 
-            <!-- axis -->
             <line
-              id="bulletAxis"
               x1="275"
               y1="245"
-              x2="535"
+              x2="540"
               y2="245"
               stroke="#315f86"
               stroke-width="3"/>
 
-            <!-- body -->
             <g id="bulletBody">
 
               <path
@@ -407,7 +479,6 @@
                 stroke="#6f6243"
                 stroke-width="2"/>
 
-              <!-- bands make spin visible -->
               <line
                 x1="-55"
                 y1="-25"
@@ -429,7 +500,7 @@
           </g>
 
 
-          <!-- YAW ARC -->
+          <!-- YAW INDICATOR -->
           <path
             id="yawArc"
             d=""
@@ -444,11 +515,11 @@
             font-size="13"
             font-weight="600"
             fill="#b05a4d">
-            yaw angle
+            yaw
           </text>
 
 
-          <!-- END-ON INSET -->
+          <!-- END-ON VIEW -->
           <rect
             x="565"
             y="330"
@@ -468,8 +539,8 @@
             End-on view
           </text>
 
-          <!-- precession orbit -->
           <ellipse
+            id="orbit"
             cx="645"
             cy="405"
             rx="48"
@@ -484,7 +555,6 @@
             r="4"
             fill="#555"/>
 
-          <!-- moving projectile-axis tip -->
           <circle
             id="axisTip"
             cx="693"
@@ -492,7 +562,6 @@
             r="7"
             fill="#315f86"/>
 
-          <!-- spin marker -->
           <line
             id="spinMarker"
             x1="645"
@@ -506,7 +575,7 @@
         </svg>
 
         <div class="visual-caption">
-          The dashed centreline is the velocity direction. The projectile's longitudinal axis precesses around it.
+          The dashed centreline is the direction of travel. The projectile axis may remain close to it, oscillate more widely, or eventually lose nose-forward stability.
         </div>
 
       </div>
@@ -515,20 +584,19 @@
       <div class="concept-card">
 
         <div class="concept-title">
-          Watch the projectile axis
+          Stable motion is not perfectly straight
         </div>
 
         <p>
-          The bullet spins rapidly about its own axis, but that axis does not have to point exactly along the direction of travel.
+          A stable spinning projectile can still yaw, precess and nutate while remaining approximately aligned with its direction of travel.
         </p>
 
         <p>
-          A yawed bullet can undergo slower <strong>precession</strong>, causing its longitudinal axis to sweep around the flight direction.
-          <strong>Nutation</strong> produces a smaller oscillation in the yaw angle during this motion.
+          In the unstable mode, the angular motion grows with time. Eventually the projectile can no longer remain nose-forward and begins to tumble.
         </p>
 
         <div class="take-home">
-          Spin is rotation about the projectile itself. Precession and nutation describe motion of the projectile's axis.
+          Yaw and precession do not automatically mean instability. Instability is characterised by angular motion that grows rather than remaining bounded.
         </div>
 
       </div>
@@ -539,7 +607,7 @@
 
 
   <div class="note">
-    This is a conceptual teaching model. The motion is exaggerated and slowed so that spin, yaw, precession and nutation can be distinguished visually.
+    This is a conceptual teaching model. Angular motion is exaggerated and slowed for clarity and does not represent a specific projectile, calibre or rifling system.
   </div>
 
 </div>
@@ -567,6 +635,12 @@
   const nutationButton =
     document.getElementById("nutationButton");
 
+  const flightState =
+    document.getElementById("flightState");
+
+  const stabilityButtons =
+    [...document.querySelectorAll("[data-stability]")];
+
   const projectile =
     document.getElementById("projectile");
 
@@ -582,19 +656,28 @@
   const yawArc =
     document.getElementById("yawArc");
 
+  const coneTop =
+    document.getElementById("coneTop");
+
+  const coneBottom =
+    document.getElementById("coneBottom");
+
+  const coneEnd =
+    document.getElementById("coneEnd");
+
+  const orbit =
+    document.getElementById("orbit");
+
 
   let running = true;
   let nutationOn = true;
+  let stability = "stable";
 
-  let startTime = performance.now();
+  let startTime =
+    performance.now();
+
   let pausedElapsed = 0;
 
-
-  /*
-    Animation rates are deliberately slowed
-    and are not intended to represent real
-    projectile frequencies.
-  */
 
   const precessionRate = 0.0010;
   const nutationRate = 0.0045;
@@ -607,8 +690,14 @@
     const cy = 245;
     const radius = 72;
 
+    const cappedAngle =
+      Math.min(
+        Math.abs(angleDegrees),
+        55
+      );
+
     const angle =
-      angleDegrees *
+      cappedAngle *
       Math.PI / 180;
 
     const x1 =
@@ -645,36 +734,123 @@
   }
 
 
+  function stabilityYaw(baseYaw, elapsed) {
+
+    const seconds =
+      elapsed / 1000;
+
+    if (stability === "stable") {
+
+      return baseYaw;
+
+    }
+
+    if (stability === "marginal") {
+
+      return Math.min(
+        28,
+        baseYaw +
+        0.65 * seconds
+      );
+
+    }
+
+    /*
+      Unstable:
+      deliberately exaggerated growth so
+      students can observe the progression.
+    */
+
+    return Math.min(
+      100,
+      baseYaw +
+      4.3 * seconds
+    );
+
+  }
+
+
+  function updateCone(angle) {
+
+    const displayAngle =
+      Math.min(
+        angle,
+        35
+      );
+
+    const height =
+      4.8 * displayAngle;
+
+    const topY =
+      245 - height;
+
+    const bottomY =
+      245 + height;
+
+    coneTop.setAttribute(
+      "d",
+      "M275 245 L570 " +
+      topY.toFixed(1)
+    );
+
+    coneBottom.setAttribute(
+      "d",
+      "M275 245 L570 " +
+      bottomY.toFixed(1)
+    );
+
+    coneEnd.setAttribute(
+      "ry",
+      Math.max(
+        8,
+        height
+      ).toFixed(1)
+    );
+
+    orbit.setAttribute(
+      "ry",
+      Math.min(
+        60,
+        10 + displayAngle * 1.4
+      ).toFixed(1)
+    );
+
+  }
+
+
   function draw(time) {
 
     const elapsed =
       running
-        ? pausedElapsed + (time - startTime)
+        ? pausedElapsed +
+          (time - startTime)
         : pausedElapsed;
 
 
     const baseYaw =
-      Number(yawSlider.value);
+      Number(
+        yawSlider.value
+      );
 
     const nutationAmplitude =
       nutationOn
-        ? Number(nutationSlider.value)
+        ? Number(
+            nutationSlider.value
+          )
         : 0;
 
-
-    /*
-      Slow precession phase.
-    */
 
     const phi =
       elapsed *
       precessionRate;
 
 
-    /*
-      Nutation varies the instantaneous
-      cone angle slightly.
-    */
+    const growingYaw =
+      stabilityYaw(
+        baseYaw,
+        elapsed
+      );
+
 
     const nutation =
       nutationAmplitude *
@@ -687,27 +863,46 @@
     const instantaneousYaw =
       Math.max(
         0,
-        baseYaw + nutation
+        growingYaw +
+        nutation
       );
 
 
     /*
-      Side-view projection.
-
-      As the axis precesses around the
-      velocity vector, only the vertical
-      projection is visible here.
+      Normal precessional side-view projection.
     */
 
-    const projectedAngle =
+    let projectedAngle =
       instantaneousYaw *
       Math.sin(phi);
 
 
     /*
-      Rotate projectile around the fixed
-      reference point at x=275, y=245.
+      Once unstable yaw becomes very large,
+      transition progressively into tumbling.
     */
+
+    let tumbling = false;
+
+    if (
+      stability === "unstable" &&
+      growingYaw >= 65
+    ) {
+
+      tumbling = true;
+
+      const tumblePhase =
+        elapsed *
+        0.0019;
+
+      projectedAngle =
+        180 *
+        Math.sin(
+          tumblePhase
+        );
+
+    }
+
 
     projectile.setAttribute(
       "transform",
@@ -717,11 +912,6 @@
     );
 
 
-    /*
-      Translate the bullet body so it lies
-      along its longitudinal axis.
-    */
-
     bulletBody.setAttribute(
       "transform",
       "translate(380 245)"
@@ -729,8 +919,18 @@
 
 
     /*
-      Update end-on precession view.
+      End-on representation.
     */
+
+    const orbitScale =
+      Math.min(
+        1.8,
+        instantaneousYaw /
+        Math.max(
+          baseYaw,
+          6
+        )
+      );
 
     const orbitX =
       645 +
@@ -740,11 +940,8 @@
     const orbitY =
       405 +
       35 *
-      Math.sin(phi) *
-      (
-        instantaneousYaw /
-        Math.max(baseYaw, 1)
-      );
+      orbitScale *
+      Math.sin(phi);
 
     axisTip.setAttribute(
       "cx",
@@ -758,14 +955,15 @@
 
 
     /*
-      Fast spin marker in end-on view.
+      Spin indicator.
     */
 
     const spin =
       elapsed *
       spinRate;
 
-    const spinLength = 22;
+    const spinLength =
+      22;
 
     const sx =
       645 +
@@ -776,16 +974,6 @@
       405 +
       spinLength *
       Math.sin(spin);
-
-    spinMarker.setAttribute(
-      "x1",
-      "645"
-    );
-
-    spinMarker.setAttribute(
-      "y1",
-      "405"
-    );
 
     spinMarker.setAttribute(
       "x2",
@@ -799,15 +987,70 @@
 
 
     /*
-      Yaw arc shown using the selected
-      mean yaw angle rather than the
-      instantaneous nutation.
+      Visual cone expands with yaw.
     */
+
+    updateCone(
+      growingYaw
+    );
+
 
     yawArc.setAttribute(
       "d",
-      makeYawArc(baseYaw)
+      makeYawArc(
+        Math.min(
+          instantaneousYaw,
+          55
+        )
+      )
     );
+
+
+    /*
+      Flight-state description.
+    */
+
+    if (tumbling) {
+
+      flightState.textContent =
+        "Tumbling";
+
+    }
+
+    else if (
+      stability === "unstable" &&
+      growingYaw >= 30
+    ) {
+
+      flightState.textContent =
+        "Growing instability";
+
+    }
+
+    else if (
+      stability === "unstable"
+    ) {
+
+      flightState.textContent =
+        "Unstable — yaw increasing";
+
+    }
+
+    else if (
+      stability === "marginal"
+    ) {
+
+      flightState.textContent =
+        "Marginal stability";
+
+    }
+
+    else {
+
+      flightState.textContent =
+        "Stable precession";
+
+    }
 
 
     yawValue.textContent =
@@ -819,9 +1062,50 @@
       ).toFixed(1);
 
 
-    requestAnimationFrame(draw);
+    requestAnimationFrame(
+      draw
+    );
 
   }
+
+
+  function resetAnimation() {
+
+    pausedElapsed = 0;
+    startTime =
+      performance.now();
+
+  }
+
+
+  stabilityButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          stability =
+            button.dataset.stability;
+
+          stabilityButtons.forEach(
+            b => {
+
+              b.classList.toggle(
+                "active",
+                b === button
+              );
+
+            }
+          );
+
+          resetAnimation();
+
+        }
+      );
+
+    }
+  );
 
 
   playButton.addEventListener(
@@ -895,6 +1179,8 @@
           yawSlider.value
         ).toFixed(0);
 
+      resetAnimation();
+
     }
   );
 
@@ -912,7 +1198,9 @@
   );
 
 
-  requestAnimationFrame(draw);
+  requestAnimationFrame(
+    draw
+  );
 
 })();
 
