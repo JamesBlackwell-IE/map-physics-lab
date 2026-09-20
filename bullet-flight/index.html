@@ -93,7 +93,7 @@
     margin-top: 10px;
   }
 
-  .buttons.two {
+  .buttons.motion {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -101,10 +101,10 @@
     min-height: 44px;
     border: 1px solid #bbb;
     background: white;
-    padding: 10px;
+    padding: 9px 7px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
   }
 
   button:hover {
@@ -117,23 +117,29 @@
     font-weight: 600;
   }
 
-  .state-box {
+  .state-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     margin-top: 20px;
-    padding: 15px;
+  }
+
+  .state-box {
+    padding: 14px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background: #f8fafb;
   }
 
   .state-label {
+    font-size: 0.82rem;
     color: #666;
-    font-size: 0.85rem;
   }
 
   .state-value {
-    margin-top: 3px;
-    font-size: 1.08rem;
+    margin-top: 4px;
     font-weight: 700;
+    line-height: 1.25;
   }
 
   .definitions {
@@ -141,10 +147,10 @@
   }
 
   .definition {
-    padding: 11px 0;
+    padding: 10px 0;
     border-top: 1px solid #e4e4e4;
-    line-height: 1.42;
-    font-size: 0.92rem;
+    line-height: 1.4;
+    font-size: 0.91rem;
   }
 
   .definition:first-child {
@@ -168,7 +174,7 @@
   }
 
   .visual-caption {
-    margin-top: 4px;
+    margin-top: 6px;
     color: #666;
     font-size: 0.9rem;
     line-height: 1.4;
@@ -215,7 +221,8 @@
   @media (max-width: 540px) {
 
     .buttons,
-    .buttons.two {
+    .buttons.motion,
+    .state-grid {
       grid-template-columns: 1fr;
     }
 
@@ -237,12 +244,13 @@
   <h1>Bullet Flight: Stability, Yaw &amp; Tumbling</h1>
 
   <p class="subtitle">
-    Explore how spin stabilises a projectile, how yaw can remain bounded during stable flight, and how increasing angular motion can lead to tumbling.
+    Explore how a spinning projectile can yaw, precess and nutate while remaining stable, and how growing angular motion can eventually lead to tumbling.
   </p>
+
 
   <div class="layout">
 
-    <!-- CONTROLS -->
+    <!-- LEFT PANEL -->
     <section class="panel">
 
       <div class="control-title">
@@ -311,43 +319,72 @@
         Motion
       </div>
 
-      <div class="buttons two">
+      <div class="buttons motion">
 
         <button
           id="playButton"
           class="active"
           type="button">
-          Pause animation
+          Pause
         </button>
+
+        <button
+          id="resetButton"
+          type="button">
+          Reset
+        </button>
+
+      </div>
+
+      <div style="margin-top:8px;">
 
         <button
           id="nutationButton"
           class="active"
-          type="button">
+          type="button"
+          style="width:100%;">
           Nutation on
         </button>
 
       </div>
 
 
-      <div class="state-box">
+      <!-- STATE -->
+      <div class="state-grid">
 
-        <div class="state-label">
-          Flight state
+        <div class="state-box">
+
+          <div class="state-label">
+            Flight state
+          </div>
+
+          <div id="flightState" class="state-value">
+            Stable precession
+          </div>
+
         </div>
 
-        <div id="flightState" class="state-value">
-          Stable precession
+        <div class="state-box">
+
+          <div class="state-label">
+            Angular deviation
+          </div>
+
+          <div id="currentAngle" class="state-value">
+            8.0°
+          </div>
+
         </div>
 
       </div>
 
 
+      <!-- DEFINITIONS -->
       <div class="definitions">
 
         <div class="definition">
           <strong>Spin</strong>
-          Rotation about the bullet's own longitudinal axis.
+          Rotation about the projectile's own longitudinal axis.
         </div>
 
         <div class="definition">
@@ -375,15 +412,15 @@
     </section>
 
 
-    <!-- VISUAL -->
+    <!-- RIGHT PANEL -->
     <section>
 
       <div class="visual-card">
 
         <svg
-          viewBox="0 0 760 500"
+          viewBox="0 0 760 520"
           role="img"
-          aria-label="Animated conceptual diagram showing projectile stability, yaw, precession, nutation and tumbling">
+          aria-label="Animated projectile showing stable precession, growing instability and tumbling">
 
           <!-- TITLE -->
           <text
@@ -397,23 +434,23 @@
           </text>
 
 
-          <!-- FLIGHT DIRECTION -->
+          <!-- DIRECTION OF TRAVEL -->
           <line
-            x1="75"
+            x1="70"
             y1="245"
-            x2="650"
+            x2="675"
             y2="245"
             stroke="#555"
             stroke-width="3"
             stroke-dasharray="10 8"/>
 
           <polygon
-            points="650,245 633,236 633,254"
+            points="675,245 658,236 658,254"
             fill="#555"/>
 
           <text
-            x="575"
-            y="222"
+            x="590"
+            y="220"
             text-anchor="middle"
             font-size="13"
             fill="#666">
@@ -421,12 +458,12 @@
           </text>
 
 
-          <!-- REFERENCE CONE -->
+          <!-- PRECESSION ENVELOPE -->
           <g id="coneGroup">
 
             <path
               id="coneTop"
-              d="M275 245 L570 200"
+              d="M300 245 L520 210"
               fill="none"
               stroke="#aab4be"
               stroke-width="2"
@@ -434,7 +471,7 @@
 
             <path
               id="coneBottom"
-              d="M275 245 L570 290"
+              d="M300 245 L520 280"
               fill="none"
               stroke="#aab4be"
               stroke-width="2"
@@ -442,10 +479,10 @@
 
             <ellipse
               id="coneEnd"
-              cx="570"
+              cx="520"
               cy="245"
-              rx="12"
-              ry="45"
+              rx="10"
+              ry="35"
               fill="none"
               stroke="#aab4be"
               stroke-width="2"
@@ -455,42 +492,47 @@
 
 
           <!-- PROJECTILE -->
-          <g id="projectile">
+          <!-- Rotates around its own centre at 300,245 -->
+          <g id="projectile"
+             transform="rotate(0 300 245)">
 
+            <!-- longitudinal reference axis -->
             <line
-              x1="275"
+              x1="185"
               y1="245"
-              x2="540"
+              x2="450"
               y2="245"
               stroke="#315f86"
               stroke-width="3"/>
 
-            <g id="bulletBody">
+            <!-- projectile body -->
+            <g transform="translate(300 245)">
 
               <path
                 d="
-                  M -100 -27
-                  L 35 -27
-                  C 60 -27 86 -13 105 0
-                  C 86 13 60 27 35 27
-                  L -100 27
+                  M -105 -27
+                  L 30 -27
+                  C 56 -27 85 -14 108 0
+                  C 85 14 56 27 30 27
+                  L -105 27
                   Z"
                 fill="#b7a06b"
                 stroke="#6f6243"
                 stroke-width="2"/>
 
+              <!-- spin reference bands -->
               <line
-                x1="-55"
+                x1="-58"
                 y1="-25"
-                x2="-40"
+                x2="-43"
                 y2="25"
                 stroke="#6f6243"
                 stroke-width="5"/>
 
               <line
-                x1="-20"
+                x1="-22"
                 y1="-25"
-                x2="-5"
+                x2="-7"
                 y2="25"
                 stroke="#6f6243"
                 stroke-width="5"/>
@@ -500,103 +542,135 @@
           </g>
 
 
-          <!-- YAW INDICATOR -->
-          <path
-            id="yawArc"
-            d=""
-            fill="none"
-            stroke="#b05a4d"
-            stroke-width="3"/>
-
-          <text
-            x="355"
-            y="307"
-            text-anchor="middle"
-            font-size="13"
-            font-weight="600"
-            fill="#b05a4d">
-            yaw
-          </text>
-
-
           <!-- END-ON VIEW -->
-          <rect
-            x="565"
-            y="330"
-            width="160"
-            height="135"
-            rx="12"
-            fill="#fafafa"
-            stroke="#ddd"/>
+          <g id="endOnGroup">
 
-          <text
-            x="645"
-            y="351"
-            text-anchor="middle"
-            font-size="12"
-            font-weight="600"
-            fill="#202124">
-            End-on view
-          </text>
+            <rect
+              x="565"
+              y="335"
+              width="160"
+              height="145"
+              rx="12"
+              fill="#fafafa"
+              stroke="#ddd"/>
 
-          <ellipse
-            id="orbit"
-            cx="645"
-            cy="405"
-            rx="48"
-            ry="35"
-            fill="none"
-            stroke="#aab4be"
-            stroke-width="2"/>
+            <text
+              x="645"
+              y="358"
+              text-anchor="middle"
+              font-size="12"
+              font-weight="600"
+              fill="#202124">
+              End-on view
+            </text>
 
-          <circle
-            cx="645"
-            cy="405"
-            r="4"
-            fill="#555"/>
+            <ellipse
+              id="orbit"
+              cx="645"
+              cy="415"
+              rx="45"
+              ry="34"
+              fill="none"
+              stroke="#aab4be"
+              stroke-width="2"/>
 
-          <circle
-            id="axisTip"
-            cx="693"
-            cy="405"
-            r="7"
-            fill="#315f86"/>
+            <circle
+              cx="645"
+              cy="415"
+              r="4"
+              fill="#555"/>
 
-          <line
-            id="spinMarker"
-            x1="645"
-            y1="405"
-            x2="666"
-            y2="405"
-            stroke="#b05a4d"
-            stroke-width="4"
-            stroke-linecap="round"/>
+            <circle
+              id="axisTip"
+              cx="690"
+              cy="415"
+              r="7"
+              fill="#315f86"/>
+
+            <!-- spin indicator -->
+            <line
+              id="spinMarker"
+              x1="645"
+              y1="415"
+              x2="666"
+              y2="415"
+              stroke="#b05a4d"
+              stroke-width="4"
+              stroke-linecap="round"/>
+
+          </g>
+
+
+          <!-- TUMBLING INDICATOR -->
+          <g id="tumbleIndicator"
+             opacity="0">
+
+            <rect
+              x="545"
+              y="362"
+              width="180"
+              height="78"
+              rx="12"
+              fill="#fafafa"
+              stroke="#ddd"/>
+
+            <text
+              x="635"
+              y="390"
+              text-anchor="middle"
+              font-size="13"
+              font-weight="700"
+              fill="#b05a4d">
+              TUMBLING
+            </text>
+
+            <text
+              x="635"
+              y="414"
+              text-anchor="middle"
+              font-size="12"
+              fill="#666">
+              axis no longer remains
+            </text>
+
+            <text
+              x="635"
+              y="431"
+              text-anchor="middle"
+              font-size="12"
+              fill="#666">
+              close to flight direction
+            </text>
+
+          </g>
 
         </svg>
 
+
         <div class="visual-caption">
-          The dashed centreline is the direction of travel. The projectile axis may remain close to it, oscillate more widely, or eventually lose nose-forward stability.
+          The dashed horizontal line represents the direction of travel. Motion is exaggerated and slowed so the different angular behaviours can be seen.
         </div>
 
       </div>
 
 
+      <!-- EXPLANATION -->
       <div class="concept-card">
 
         <div class="concept-title">
-          Stable motion is not perfectly straight
+          Stable flight can still involve angular motion
         </div>
 
         <p>
-          A stable spinning projectile can still yaw, precess and nutate while remaining approximately aligned with its direction of travel.
+          A stable spinning projectile does not need to point perfectly along its direction of travel. Small yaw, precession and nutation can remain bounded.
         </p>
 
         <p>
-          In the unstable mode, the angular motion grows with time. Eventually the projectile can no longer remain nose-forward and begins to tumble.
+          In the unstable mode, the angular deviation progressively increases. Once nose-forward stability is lost, the projectile begins continuous end-over-end tumbling.
         </p>
 
         <div class="take-home">
-          Yaw and precession do not automatically mean instability. Instability is characterised by angular motion that grows rather than remaining bounded.
+          Yaw, precession and nutation can occur during stable flight. The important distinction is whether the angular motion remains bounded or grows.
         </div>
 
       </div>
@@ -607,7 +681,7 @@
 
 
   <div class="note">
-    This is a conceptual teaching model. Angular motion is exaggerated and slowed for clarity and does not represent a specific projectile, calibre or rifling system.
+    This is a conceptual teaching animation rather than a quantitative external-ballistics model. The rates and angular motion are deliberately exaggerated for clarity.
   </div>
 
 </div>
@@ -632,11 +706,17 @@
   const playButton =
     document.getElementById("playButton");
 
+  const resetButton =
+    document.getElementById("resetButton");
+
   const nutationButton =
     document.getElementById("nutationButton");
 
   const flightState =
     document.getElementById("flightState");
+
+  const currentAngle =
+    document.getElementById("currentAngle");
 
   const stabilityButtons =
     [...document.querySelectorAll("[data-stability]")];
@@ -644,17 +724,14 @@
   const projectile =
     document.getElementById("projectile");
 
-  const bulletBody =
-    document.getElementById("bulletBody");
-
   const axisTip =
     document.getElementById("axisTip");
 
   const spinMarker =
     document.getElementById("spinMarker");
 
-  const yawArc =
-    document.getElementById("yawArc");
+  const coneGroup =
+    document.getElementById("coneGroup");
 
   const coneTop =
     document.getElementById("coneTop");
@@ -668,10 +745,16 @@
   const orbit =
     document.getElementById("orbit");
 
+  const endOnGroup =
+    document.getElementById("endOnGroup");
 
+  const tumbleIndicator =
+    document.getElementById("tumbleIndicator");
+
+
+  let stability = "stable";
   let running = true;
   let nutationOn = true;
-  let stability = "stable";
 
   let startTime =
     performance.now();
@@ -679,92 +762,121 @@
   let pausedElapsed = 0;
 
 
+  /*
+    Deliberately slowed conceptual rates.
+  */
+
   const precessionRate = 0.0010;
-  const nutationRate = 0.0045;
-  const spinRate = 0.012;
+  const nutationRate = 0.0042;
+  const spinRate = 0.013;
 
 
-  function makeYawArc(angleDegrees) {
+  /*
+    Unstable mode timing.
 
-    const cx = 275;
-    const cy = 245;
-    const radius = 72;
+    Angular motion grows for the first
+    several seconds, then transitions
+    smoothly into tumbling.
+  */
 
-    const cappedAngle =
-      Math.min(
-        Math.abs(angleDegrees),
-        55
+  const tumbleStartSeconds = 8.0;
+
+
+  function elapsedTime(now) {
+
+    return running
+      ? pausedElapsed +
+        (now - startTime)
+      : pausedElapsed;
+
+  }
+
+
+  function resetAnimation() {
+
+    pausedElapsed = 0;
+    startTime =
+      performance.now();
+
+  }
+
+
+  /*
+    Smoothstep gives a gradual transition
+    rather than a sudden change.
+  */
+
+  function smoothstep(x) {
+
+    const t =
+      Math.max(
+        0,
+        Math.min(1, x)
       );
 
-    const angle =
-      cappedAngle *
-      Math.PI / 180;
-
-    const x1 =
-      cx + radius;
-
-    const y1 =
-      cy;
-
-    const x2 =
-      cx +
-      radius *
-      Math.cos(angle);
-
-    const y2 =
-      cy -
-      radius *
-      Math.sin(angle);
-
     return (
-      "M " +
-      x1.toFixed(1) +
-      " " +
-      y1.toFixed(1) +
-      " A " +
-      radius +
-      " " +
-      radius +
-      " 0 0 0 " +
-      x2.toFixed(1) +
-      " " +
-      y2.toFixed(1)
+      t * t *
+      (3 - 2 * t)
     );
 
   }
 
 
-  function stabilityYaw(baseYaw, elapsed) {
+  function yawEnvelope(
+    baseYaw,
+    seconds
+  ) {
 
-    const seconds =
-      elapsed / 1000;
-
-    if (stability === "stable") {
+    if (
+      stability === "stable"
+    ) {
 
       return baseYaw;
 
     }
 
-    if (stability === "marginal") {
 
-      return Math.min(
-        28,
+    if (
+      stability === "marginal"
+    ) {
+
+      /*
+        Marginal behaviour becomes somewhat
+        larger but remains bounded.
+      */
+
+      return (
         baseYaw +
-        0.65 * seconds
+        7 *
+        (
+          0.5 +
+          0.5 *
+          Math.sin(
+            seconds * 0.45
+          )
+        )
       );
 
     }
 
+
     /*
-      Unstable:
-      deliberately exaggerated growth so
-      students can observe the progression.
+      Unstable mode.
+
+      Gradually increases from the selected
+      initial yaw toward about 60 degrees.
     */
 
-    return Math.min(
-      100,
+    const growth =
+      smoothstep(
+        seconds /
+        tumbleStartSeconds
+      );
+
+    return (
       baseYaw +
-      4.3 * seconds
+      (60 - baseYaw) *
+      growth
     );
 
   }
@@ -779,52 +891,44 @@
       );
 
     const height =
-      4.8 * displayAngle;
-
-    const topY =
-      245 - height;
-
-    const bottomY =
-      245 + height;
+      10 +
+      displayAngle * 2.1;
 
     coneTop.setAttribute(
       "d",
-      "M275 245 L570 " +
-      topY.toFixed(1)
+      "M300 245 L520 " +
+      (245 - height).toFixed(1)
     );
 
     coneBottom.setAttribute(
       "d",
-      "M275 245 L570 " +
-      bottomY.toFixed(1)
+      "M300 245 L520 " +
+      (245 + height).toFixed(1)
     );
 
     coneEnd.setAttribute(
       "ry",
-      Math.max(
-        8,
-        height
-      ).toFixed(1)
+      height.toFixed(1)
     );
 
     orbit.setAttribute(
       "ry",
       Math.min(
-        60,
-        10 + displayAngle * 1.4
+        58,
+        16 + displayAngle
       ).toFixed(1)
     );
 
   }
 
 
-  function draw(time) {
+  function draw(now) {
 
     const elapsed =
-      running
-        ? pausedElapsed +
-          (time - startTime)
-        : pausedElapsed;
+      elapsedTime(now);
+
+    const seconds =
+      elapsed / 1000;
 
 
     const baseYaw =
@@ -845,10 +949,10 @@
       precessionRate;
 
 
-    const growingYaw =
-      stabilityYaw(
+    const envelope =
+      yawEnvelope(
         baseYaw,
-        elapsed
+        seconds
       );
 
 
@@ -863,151 +967,204 @@
     const instantaneousYaw =
       Math.max(
         0,
-        growingYaw +
+        envelope +
         nutation
       );
 
 
-    /*
-      Normal precessional side-view projection.
-    */
-
-    let projectedAngle =
-      instantaneousYaw *
-      Math.sin(phi);
-
-
-    /*
-      Once unstable yaw becomes very large,
-      transition progressively into tumbling.
-    */
-
-    let tumbling = false;
-
-    if (
+    const tumbling =
       stability === "unstable" &&
-      growingYaw >= 65
-    ) {
+      seconds >= tumbleStartSeconds;
 
-      tumbling = true;
 
-      const tumblePhase =
-        elapsed *
-        0.0019;
+    let displayedAngle;
 
-      projectedAngle =
-        180 *
-        Math.sin(
-          tumblePhase
+
+    if (!tumbling) {
+
+      /*
+        Side-view projection of a precessing
+        longitudinal axis.
+      */
+
+      displayedAngle =
+        instantaneousYaw *
+        Math.sin(phi);
+
+
+      projectile.setAttribute(
+        "transform",
+        "rotate(" +
+        (-displayedAngle).toFixed(2) +
+        " 300 245)"
+      );
+
+
+      /*
+        Precession graphics remain visible.
+      */
+
+      coneGroup.setAttribute(
+        "opacity",
+        "1"
+      );
+
+      endOnGroup.setAttribute(
+        "opacity",
+        "1"
+      );
+
+      tumbleIndicator.setAttribute(
+        "opacity",
+        "0"
+      );
+
+
+      /*
+        End-on axis-tip motion.
+      */
+
+      const relativeSize =
+        Math.min(
+          1.7,
+          instantaneousYaw /
+          Math.max(
+            baseYaw,
+            5
+          )
         );
+
+      const orbitX =
+        645 +
+        45 *
+        Math.cos(phi);
+
+      const orbitY =
+        415 +
+        34 *
+        relativeSize *
+        Math.sin(phi);
+
+      axisTip.setAttribute(
+        "cx",
+        orbitX.toFixed(1)
+      );
+
+      axisTip.setAttribute(
+        "cy",
+        orbitY.toFixed(1)
+      );
+
+
+      updateCone(
+        envelope
+      );
+
+    }
+
+    else {
+
+      /*
+        Continuous end-over-end tumbling.
+
+        Importantly, this is a continuously
+        increasing rotation rather than a
+        back-and-forth oscillation.
+      */
+
+      const tumbleElapsed =
+        seconds -
+        tumbleStartSeconds;
+
+      /*
+        Start near the orientation reached at
+        the end of the instability phase, then
+        rotate continuously.
+      */
+
+      const entryAngle =
+        60 *
+        Math.sin(
+          tumbleStartSeconds *
+          1000 *
+          precessionRate
+        );
+
+      const tumbleRate =
+        115;   // degrees per second
+
+      displayedAngle =
+        entryAngle +
+        tumbleRate *
+        tumbleElapsed;
+
+
+      projectile.setAttribute(
+        "transform",
+        "rotate(" +
+        (-displayedAngle).toFixed(2) +
+        " 300 245)"
+      );
+
+
+      /*
+        Once tumbling begins the cone and
+        end-on precession inset are no longer
+        the useful representation.
+      */
+
+      coneGroup.setAttribute(
+        "opacity",
+        "0.12"
+      );
+
+      endOnGroup.setAttribute(
+        "opacity",
+        "0"
+      );
+
+      tumbleIndicator.setAttribute(
+        "opacity",
+        "1"
+      );
 
     }
 
 
-    projectile.setAttribute(
-      "transform",
-      "rotate(" +
-      (-projectedAngle).toFixed(2) +
-      " 275 245)"
-    );
-
-
-    bulletBody.setAttribute(
-      "transform",
-      "translate(380 245)"
-    );
-
-
     /*
-      End-on representation.
-    */
+      Spin marker.
 
-    const orbitScale =
-      Math.min(
-        1.8,
-        instantaneousYaw /
-        Math.max(
-          baseYaw,
-          6
-        )
-      );
-
-    const orbitX =
-      645 +
-      48 *
-      Math.cos(phi);
-
-    const orbitY =
-      405 +
-      35 *
-      orbitScale *
-      Math.sin(phi);
-
-    axisTip.setAttribute(
-      "cx",
-      orbitX.toFixed(1)
-    );
-
-    axisTip.setAttribute(
-      "cy",
-      orbitY.toFixed(1)
-    );
-
-
-    /*
-      Spin indicator.
+      Relevant while nose-forward.
     */
 
     const spin =
       elapsed *
       spinRate;
 
-    const spinLength =
-      22;
-
-    const sx =
-      645 +
-      spinLength *
-      Math.cos(spin);
-
-    const sy =
-      405 +
-      spinLength *
-      Math.sin(spin);
+    const markerLength =
+      21;
 
     spinMarker.setAttribute(
       "x2",
-      sx.toFixed(1)
+      (
+        645 +
+        markerLength *
+        Math.cos(spin)
+      ).toFixed(1)
     );
 
     spinMarker.setAttribute(
       "y2",
-      sy.toFixed(1)
+      (
+        415 +
+        markerLength *
+        Math.sin(spin)
+      ).toFixed(1)
     );
 
 
     /*
-      Visual cone expands with yaw.
-    */
-
-    updateCone(
-      growingYaw
-    );
-
-
-    yawArc.setAttribute(
-      "d",
-      makeYawArc(
-        Math.min(
-          instantaneousYaw,
-          55
-        )
-      )
-    );
-
-
-    /*
-      Flight-state description.
+      Status information.
     */
 
     if (tumbling) {
@@ -1015,15 +1172,22 @@
       flightState.textContent =
         "Tumbling";
 
+      currentAngle.textContent =
+        "Large / unbounded";
+
     }
 
     else if (
       stability === "unstable" &&
-      growingYaw >= 30
+      envelope > 35
     ) {
 
       flightState.textContent =
         "Growing instability";
+
+      currentAngle.textContent =
+        instantaneousYaw.toFixed(1) +
+        "°";
 
     }
 
@@ -1032,7 +1196,11 @@
     ) {
 
       flightState.textContent =
-        "Unstable — yaw increasing";
+        "Yaw increasing";
+
+      currentAngle.textContent =
+        instantaneousYaw.toFixed(1) +
+        "°";
 
     }
 
@@ -1043,12 +1211,20 @@
       flightState.textContent =
         "Marginal stability";
 
+      currentAngle.textContent =
+        instantaneousYaw.toFixed(1) +
+        "°";
+
     }
 
     else {
 
       flightState.textContent =
         "Stable precession";
+
+      currentAngle.textContent =
+        instantaneousYaw.toFixed(1) +
+        "°";
 
     }
 
@@ -1062,21 +1238,14 @@
       ).toFixed(1);
 
 
-    requestAnimationFrame(
-      draw
-    );
+    requestAnimationFrame(draw);
 
   }
 
 
-  function resetAnimation() {
-
-    pausedElapsed = 0;
-    startTime =
-      performance.now();
-
-  }
-
+  /*
+    STABILITY BUTTONS
+  */
 
   stabilityButtons.forEach(
     button => {
@@ -1108,6 +1277,10 @@
   );
 
 
+  /*
+    PLAY / PAUSE
+  */
+
   playButton.addEventListener(
     "click",
     () => {
@@ -1121,7 +1294,7 @@
         running = false;
 
         playButton.textContent =
-          "Play animation";
+          "Play";
 
         playButton.classList.remove(
           "active"
@@ -1137,7 +1310,7 @@
         running = true;
 
         playButton.textContent =
-          "Pause animation";
+          "Pause";
 
         playButton.classList.add(
           "active"
@@ -1148,6 +1321,24 @@
     }
   );
 
+
+  /*
+    RESET
+  */
+
+  resetButton.addEventListener(
+    "click",
+    () => {
+
+      resetAnimation();
+
+    }
+  );
+
+
+  /*
+    NUTATION TOGGLE
+  */
 
   nutationButton.addEventListener(
     "click",
@@ -1169,6 +1360,10 @@
     }
   );
 
+
+  /*
+    SLIDERS
+  */
 
   yawSlider.addEventListener(
     "input",
@@ -1198,9 +1393,7 @@
   );
 
 
-  requestAnimationFrame(
-    draw
-  );
+  requestAnimationFrame(draw);
 
 })();
 
