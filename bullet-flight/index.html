@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bullet Flight | MAP Physics Lab</title>
+
+<style>
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #202124;
+  }
+
+  .page {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 28px 20px 50px;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    margin: 0 0 28px;
+    color: #666;
+    max-width: 820px;
+    line-height: 1.45;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .panel,
+  .visual-card,
+  .concept-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .control-title {
+    font-weight: 600;
+    margin-top: 20px;
+  }
+
+  .control-title:first-child {
+    margin-top: 0;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .value {
+    margin-top: 4px;
+    color: #666;
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  button {
+    min-height: 44px;
+    border: 1px solid #bbb;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.93rem;
+  }
+
+  button:hover {
+    background: #f2f2f2;
+  }
+
+  button.active {
+    background: #e8eef8;
+    border-color: #5676a5;
+    font-weight: 600;
+  }
+
+  .definitions {
+    margin-top: 22px;
+  }
+
+  .definition {
+    padding: 12px 0;
+    border-top: 1px solid #e4e4e4;
+    line-height: 1.42;
+    font-size: 0.93rem;
+  }
+
+  .definition:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .definition strong {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .visual-card {
+    padding: 14px;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .visual-caption {
+    margin-top: 4px;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .concept-card {
+    margin-top: 14px;
+    padding: 17px;
+  }
+
+  .concept-title {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .concept-card p {
+    margin: 7px 0 0;
+    line-height: 1.5;
+  }
+
+  .take-home {
+    margin-top: 13px;
+    padding-top: 12px;
+    border-top: 1px solid #e3e3e3;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .note {
+    margin-top: 24px;
+    color: #777;
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 840px) {
+
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+  @media (max-width: 520px) {
+
+    .buttons {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+    }
+
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <a class="back" href="../">← MAP Physics Lab</a>
+
+  <h1>Bullet Flight: Yaw, Precession &amp; Nutation</h1>
+
+  <p class="subtitle">
+    Explore how a spinning projectile can remain pointed close to its direction of travel while its axis undergoes yaw, precession and nutation.
+  </p>
+
+
+  <div class="layout">
+
+    <!-- CONTROLS -->
+    <section class="panel">
+
+      <div class="control-title">
+        Yaw angle
+      </div>
+
+      <input
+        id="yawSlider"
+        type="range"
+        min="0"
+        max="20"
+        value="10"
+        step="1">
+
+      <div class="value">
+        <span id="yawValue">10</span>°
+      </div>
+
+
+      <div class="control-title">
+        Nutation amplitude
+      </div>
+
+      <input
+        id="nutationSlider"
+        type="range"
+        min="0"
+        max="6"
+        value="3"
+        step="0.5">
+
+      <div class="value">
+        ±<span id="nutationValue">3.0</span>°
+      </div>
+
+
+      <div class="control-title">
+        Motion
+      </div>
+
+      <div class="buttons">
+
+        <button
+          id="playButton"
+          class="active"
+          type="button">
+          Pause animation
+        </button>
+
+        <button
+          id="nutationButton"
+          class="active"
+          type="button">
+          Nutation on
+        </button>
+
+      </div>
+
+
+      <div class="definitions">
+
+        <div class="definition">
+          <strong>Spin</strong>
+          Rotation about the bullet's own longitudinal axis.
+        </div>
+
+        <div class="definition">
+          <strong>Yaw</strong>
+          The angle between the bullet's longitudinal axis and its direction of travel.
+        </div>
+
+        <div class="definition">
+          <strong>Precession</strong>
+          The bullet axis slowly rotates around the direction-of-travel axis, tracing a cone.
+        </div>
+
+        <div class="definition">
+          <strong>Nutation</strong>
+          A smaller oscillation superimposed on the precessional motion.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- VISUAL -->
+    <section>
+
+      <div class="visual-card">
+
+        <svg
+          id="mainSvg"
+          viewBox="0 0 760 500"
+          role="img"
+          aria-label="Animated conceptual diagram of bullet spin, yaw, precession and nutation">
+
+          <!-- MAIN TITLE -->
+          <text
+            x="380"
+            y="27"
+            text-anchor="middle"
+            font-size="14"
+            font-weight="600"
+            fill="#202124">
+            Direction of travel and projectile axis
+          </text>
+
+
+          <!-- FLIGHT AXIS -->
+          <line
+            x1="75"
+            y1="245"
+            x2="650"
+            y2="245"
+            stroke="#555"
+            stroke-width="3"
+            stroke-dasharray="10 8"/>
+
+          <polygon
+            points="650,245 633,236 633,254"
+            fill="#555"/>
+
+          <text
+            x="575"
+            y="222"
+            text-anchor="middle"
+            font-size="13"
+            fill="#666">
+            direction of travel
+          </text>
+
+
+          <!-- PRECESSION CONE -->
+          <path
+            d="M275 245 L570 188"
+            fill="none"
+            stroke="#aab4be"
+            stroke-width="2"
+            stroke-dasharray="7 7"/>
+
+          <path
+            d="M275 245 L570 302"
+            fill="none"
+            stroke="#aab4be"
+            stroke-width="2"
+            stroke-dasharray="7 7"/>
+
+          <ellipse
+            cx="570"
+            cy="245"
+            rx="12"
+            ry="57"
+            fill="none"
+            stroke="#aab4be"
+            stroke-width="2"
+            stroke-dasharray="6 6"/>
+
+
+          <!-- PROJECTILE ASSEMBLY -->
+          <g id="projectile">
+
+            <!-- axis -->
+            <line
+              id="bulletAxis"
+              x1="275"
+              y1="245"
+              x2="535"
+              y2="245"
+              stroke="#315f86"
+              stroke-width="3"/>
+
+            <!-- body -->
+            <g id="bulletBody">
+
+              <path
+                d="
+                  M -100 -27
+                  L 35 -27
+                  C 60 -27 86 -13 105 0
+                  C 86 13 60 27 35 27
+                  L -100 27
+                  Z"
+                fill="#b7a06b"
+                stroke="#6f6243"
+                stroke-width="2"/>
+
+              <!-- bands make spin visible -->
+              <line
+                x1="-55"
+                y1="-25"
+                x2="-40"
+                y2="25"
+                stroke="#6f6243"
+                stroke-width="5"/>
+
+              <line
+                x1="-20"
+                y1="-25"
+                x2="-5"
+                y2="25"
+                stroke="#6f6243"
+                stroke-width="5"/>
+
+            </g>
+
+          </g>
+
+
+          <!-- YAW ARC -->
+          <path
+            id="yawArc"
+            d=""
+            fill="none"
+            stroke="#b05a4d"
+            stroke-width="3"/>
+
+          <text
+            x="355"
+            y="307"
+            text-anchor="middle"
+            font-size="13"
+            font-weight="600"
+            fill="#b05a4d">
+            yaw angle
+          </text>
+
+
+          <!-- END-ON INSET -->
+          <rect
+            x="565"
+            y="330"
+            width="160"
+            height="135"
+            rx="12"
+            fill="#fafafa"
+            stroke="#ddd"/>
+
+          <text
+            x="645"
+            y="351"
+            text-anchor="middle"
+            font-size="12"
+            font-weight="600"
+            fill="#202124">
+            End-on view
+          </text>
+
+          <!-- precession orbit -->
+          <ellipse
+            cx="645"
+            cy="405"
+            rx="48"
+            ry="35"
+            fill="none"
+            stroke="#aab4be"
+            stroke-width="2"/>
+
+          <circle
+            cx="645"
+            cy="405"
+            r="4"
+            fill="#555"/>
+
+          <!-- moving projectile-axis tip -->
+          <circle
+            id="axisTip"
+            cx="693"
+            cy="405"
+            r="7"
+            fill="#315f86"/>
+
+          <!-- spin marker -->
+          <line
+            id="spinMarker"
+            x1="645"
+            y1="405"
+            x2="666"
+            y2="405"
+            stroke="#b05a4d"
+            stroke-width="4"
+            stroke-linecap="round"/>
+
+        </svg>
+
+        <div class="visual-caption">
+          The dashed centreline is the velocity direction. The projectile's longitudinal axis precesses around it.
+        </div>
+
+      </div>
+
+
+      <div class="concept-card">
+
+        <div class="concept-title">
+          Watch the projectile axis
+        </div>
+
+        <p>
+          The bullet spins rapidly about its own axis, but that axis does not have to point exactly along the direction of travel.
+        </p>
+
+        <p>
+          A yawed bullet can undergo slower <strong>precession</strong>, causing its longitudinal axis to sweep around the flight direction.
+          <strong>Nutation</strong> produces a smaller oscillation in the yaw angle during this motion.
+        </p>
+
+        <div class="take-home">
+          Spin is rotation about the projectile itself. Precession and nutation describe motion of the projectile's axis.
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <div class="note">
+    This is a conceptual teaching model. The motion is exaggerated and slowed so that spin, yaw, precession and nutation can be distinguished visually.
+  </div>
+
+</div>
+
+
+<script>
+
+(() => {
+
+  const yawSlider =
+    document.getElementById("yawSlider");
+
+  const nutationSlider =
+    document.getElementById("nutationSlider");
+
+  const yawValue =
+    document.getElementById("yawValue");
+
+  const nutationValue =
+    document.getElementById("nutationValue");
+
+  const playButton =
+    document.getElementById("playButton");
+
+  const nutationButton =
+    document.getElementById("nutationButton");
+
+  const projectile =
+    document.getElementById("projectile");
+
+  const bulletBody =
+    document.getElementById("bulletBody");
+
+  const axisTip =
+    document.getElementById("axisTip");
+
+  const spinMarker =
+    document.getElementById("spinMarker");
+
+  const yawArc =
+    document.getElementById("yawArc");
+
+
+  let running = true;
+  let nutationOn = true;
+
+  let startTime = performance.now();
+  let pausedElapsed = 0;
+
+
+  /*
+    Animation rates are deliberately slowed
+    and are not intended to represent real
+    projectile frequencies.
+  */
+
+  const precessionRate = 0.0010;
+  const nutationRate = 0.0045;
+  const spinRate = 0.012;
+
+
+  function makeYawArc(angleDegrees) {
+
+    const cx = 275;
+    const cy = 245;
+    const radius = 72;
+
+    const angle =
+      angleDegrees *
+      Math.PI / 180;
+
+    const x1 =
+      cx + radius;
+
+    const y1 =
+      cy;
+
+    const x2 =
+      cx +
+      radius *
+      Math.cos(angle);
+
+    const y2 =
+      cy -
+      radius *
+      Math.sin(angle);
+
+    return (
+      "M " +
+      x1.toFixed(1) +
+      " " +
+      y1.toFixed(1) +
+      " A " +
+      radius +
+      " " +
+      radius +
+      " 0 0 0 " +
+      x2.toFixed(1) +
+      " " +
+      y2.toFixed(1)
+    );
+
+  }
+
+
+  function draw(time) {
+
+    const elapsed =
+      running
+        ? pausedElapsed + (time - startTime)
+        : pausedElapsed;
+
+
+    const baseYaw =
+      Number(yawSlider.value);
+
+    const nutationAmplitude =
+      nutationOn
+        ? Number(nutationSlider.value)
+        : 0;
+
+
+    /*
+      Slow precession phase.
+    */
+
+    const phi =
+      elapsed *
+      precessionRate;
+
+
+    /*
+      Nutation varies the instantaneous
+      cone angle slightly.
+    */
+
+    const nutation =
+      nutationAmplitude *
+      Math.sin(
+        elapsed *
+        nutationRate
+      );
+
+
+    const instantaneousYaw =
+      Math.max(
+        0,
+        baseYaw + nutation
+      );
+
+
+    /*
+      Side-view projection.
+
+      As the axis precesses around the
+      velocity vector, only the vertical
+      projection is visible here.
+    */
+
+    const projectedAngle =
+      instantaneousYaw *
+      Math.sin(phi);
+
+
+    /*
+      Rotate projectile around the fixed
+      reference point at x=275, y=245.
+    */
+
+    projectile.setAttribute(
+      "transform",
+      "rotate(" +
+      (-projectedAngle).toFixed(2) +
+      " 275 245)"
+    );
+
+
+    /*
+      Translate the bullet body so it lies
+      along its longitudinal axis.
+    */
+
+    bulletBody.setAttribute(
+      "transform",
+      "translate(380 245)"
+    );
+
+
+    /*
+      Update end-on precession view.
+    */
+
+    const orbitX =
+      645 +
+      48 *
+      Math.cos(phi);
+
+    const orbitY =
+      405 +
+      35 *
+      Math.sin(phi) *
+      (
+        instantaneousYaw /
+        Math.max(baseYaw, 1)
+      );
+
+    axisTip.setAttribute(
+      "cx",
+      orbitX.toFixed(1)
+    );
+
+    axisTip.setAttribute(
+      "cy",
+      orbitY.toFixed(1)
+    );
+
+
+    /*
+      Fast spin marker in end-on view.
+    */
+
+    const spin =
+      elapsed *
+      spinRate;
+
+    const spinLength = 22;
+
+    const sx =
+      645 +
+      spinLength *
+      Math.cos(spin);
+
+    const sy =
+      405 +
+      spinLength *
+      Math.sin(spin);
+
+    spinMarker.setAttribute(
+      "x1",
+      "645"
+    );
+
+    spinMarker.setAttribute(
+      "y1",
+      "405"
+    );
+
+    spinMarker.setAttribute(
+      "x2",
+      sx.toFixed(1)
+    );
+
+    spinMarker.setAttribute(
+      "y2",
+      sy.toFixed(1)
+    );
+
+
+    /*
+      Yaw arc shown using the selected
+      mean yaw angle rather than the
+      instantaneous nutation.
+    */
+
+    yawArc.setAttribute(
+      "d",
+      makeYawArc(baseYaw)
+    );
+
+
+    yawValue.textContent =
+      baseYaw.toFixed(0);
+
+    nutationValue.textContent =
+      Number(
+        nutationSlider.value
+      ).toFixed(1);
+
+
+    requestAnimationFrame(draw);
+
+  }
+
+
+  playButton.addEventListener(
+    "click",
+    () => {
+
+      if (running) {
+
+        pausedElapsed +=
+          performance.now() -
+          startTime;
+
+        running = false;
+
+        playButton.textContent =
+          "Play animation";
+
+        playButton.classList.remove(
+          "active"
+        );
+
+      }
+
+      else {
+
+        startTime =
+          performance.now();
+
+        running = true;
+
+        playButton.textContent =
+          "Pause animation";
+
+        playButton.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+  );
+
+
+  nutationButton.addEventListener(
+    "click",
+    () => {
+
+      nutationOn =
+        !nutationOn;
+
+      nutationButton.textContent =
+        nutationOn
+          ? "Nutation on"
+          : "Nutation off";
+
+      nutationButton.classList.toggle(
+        "active",
+        nutationOn
+      );
+
+    }
+  );
+
+
+  yawSlider.addEventListener(
+    "input",
+    () => {
+
+      yawValue.textContent =
+        Number(
+          yawSlider.value
+        ).toFixed(0);
+
+    }
+  );
+
+
+  nutationSlider.addEventListener(
+    "input",
+    () => {
+
+      nutationValue.textContent =
+        Number(
+          nutationSlider.value
+        ).toFixed(1);
+
+    }
+  );
+
+
+  requestAnimationFrame(draw);
+
+})();
+
+</script>
+
+</body>
+</html>
