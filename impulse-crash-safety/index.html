@@ -149,6 +149,29 @@
     border-radius: 10px;
   }
 
+  .safety-note {
+    margin-top: 16px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f8fafb;
+  }
+
+  .safety-note-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .safety-item {
+    margin-top: 8px;
+    line-height: 1.45;
+    font-size: 0.92rem;
+  }
+
+  .safety-item:first-of-type {
+    margin-top: 0;
+  }
+
   .diagram {
     padding: 12px;
   }
@@ -300,6 +323,24 @@
 
       <div id="explanation" class="explanation">
         A rigid stop happens very quickly, so the force is large.
+      </div>
+
+      <div class="safety-note">
+
+        <div class="safety-note-title">
+          How safety devices help
+        </div>
+
+        <div class="safety-item">
+          <strong>1. Increase stopping time</strong><br>
+          Longer stopping time reduces the force needed to produce the same change in momentum.
+        </div>
+
+        <div class="safety-item">
+          <strong>2. Increase contact area</strong><br>
+          Spreading the force over a larger area reduces pressure on the body.
+        </div>
+
       </div>
 
     </section>
@@ -495,7 +536,7 @@
             stroke-linecap="round">
           </path>
 
-          <!-- fixed annotations -->
+          <!-- fixed annotation -->
           <text
             x="390"
             y="31"
@@ -504,16 +545,6 @@
             font-weight="600"
             fill="#202124">
             Peak force shown by curve height
-          </text>
-
-          <text
-            x="390"
-            y="325"
-            text-anchor="middle"
-            font-size="13"
-            font-weight="600"
-            fill="#202124">
-            Shaded area = impulse
           </text>
 
         </svg>
@@ -539,7 +570,7 @@
         </div>
 
         <div class="key-point">
-          More momentum → larger area. Longer stopping time → lower peak force.
+          More momentum → larger impulse. Longer stopping time → lower force.
         </div>
 
       </div>
