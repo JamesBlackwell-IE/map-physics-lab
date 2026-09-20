@@ -194,6 +194,7 @@
 
   .visual {
     padding: 16px;
+    overflow: hidden;
   }
 
   svg {
@@ -237,6 +238,35 @@
     margin-top: 24px;
     color: #777;
     font-size: 0.88rem;
+  }
+
+  /* ---------- MOTION ---------- */
+
+  .wheel-rolling {
+    animation: wheelRotate 1.2s linear infinite;
+    transform-origin: 320px 265px;
+  }
+
+  @keyframes wheelRotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .road-moving {
+    animation: roadMove 0.7s linear infinite;
+  }
+
+  @keyframes roadMove {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100px);
+    }
   }
 
   @media (max-width: 820px) {
@@ -421,31 +451,7 @@
             Tyre–road contact during braking
           </text>
 
-          <!-- road -->
-          <rect
-            x="70"
-            y="350"
-            width="560"
-            height="55"
-            rx="6"
-            fill="#d8d8d8"/>
-
-          <line
-            x1="70"
-            y1="350"
-            x2="630"
-            y2="350"
-            stroke="#555"
-            stroke-width="3"/>
-
-          <!-- road markings -->
-          <line x1="105" y1="386" x2="165" y2="386" stroke="#fff" stroke-width="4"/>
-          <line x1="205" y1="386" x2="265" y2="386" stroke="#fff" stroke-width="4"/>
-          <line x1="305" y1="386" x2="365" y2="386" stroke="#fff" stroke-width="4"/>
-          <line x1="405" y1="386" x2="465" y2="386" stroke="#fff" stroke-width="4"/>
-          <line x1="505" y1="386" x2="565" y2="386" stroke="#fff" stroke-width="4"/>
-
-          <!-- direction arrow -->
+          <!-- movement arrow -->
           <line
             x1="455"
             y1="105"
@@ -467,7 +473,38 @@
             car moving
           </text>
 
-          <!-- wheel -->
+          <!-- ROAD -->
+          <rect
+            x="70"
+            y="350"
+            width="560"
+            height="55"
+            rx="6"
+            fill="#d8d8d8"/>
+
+          <line
+            x1="70"
+            y1="350"
+            x2="630"
+            y2="350"
+            stroke="#555"
+            stroke-width="3"/>
+
+          <!-- animated road markings -->
+          <g id="roadMarkings">
+
+            <line x1="5" y1="386" x2="65" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="105" y1="386" x2="165" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="205" y1="386" x2="265" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="305" y1="386" x2="365" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="405" y1="386" x2="465" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="505" y1="386" x2="565" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="605" y1="386" x2="665" y2="386" stroke="#fff" stroke-width="4"/>
+            <line x1="705" y1="386" x2="765" y2="386" stroke="#fff" stroke-width="4"/>
+
+          </g>
+
+          <!-- WHEEL -->
           <g id="wheelGroup">
 
             <circle
@@ -489,14 +526,58 @@
               fill="#74787c"/>
 
             <!-- spokes -->
-            <line x1="320" y1="210" x2="320" y2="247" stroke="#74787c" stroke-width="5"/>
-            <line x1="320" y1="283" x2="320" y2="320" stroke="#74787c" stroke-width="5"/>
-            <line x1="265" y1="265" x2="302" y2="265" stroke="#74787c" stroke-width="5"/>
-            <line x1="338" y1="265" x2="375" y2="265" stroke="#74787c" stroke-width="5"/>
+            <line
+              x1="320"
+              y1="210"
+              x2="320"
+              y2="247"
+              stroke="#74787c"
+              stroke-width="5"/>
+
+            <line
+              x1="320"
+              y1="283"
+              x2="320"
+              y2="320"
+              stroke="#74787c"
+              stroke-width="5"/>
+
+            <line
+              x1="265"
+              y1="265"
+              x2="302"
+              y2="265"
+              stroke="#74787c"
+              stroke-width="5"/>
+
+            <line
+              x1="338"
+              y1="265"
+              x2="375"
+              y2="265"
+              stroke="#74787c"
+              stroke-width="5"/>
+
+            <!-- diagonal markers make rotation obvious -->
+            <line
+              x1="281"
+              y1="226"
+              x2="305"
+              y2="250"
+              stroke="#74787c"
+              stroke-width="5"/>
+
+            <line
+              x1="335"
+              y1="280"
+              x2="359"
+              y2="304"
+              stroke="#74787c"
+              stroke-width="5"/>
 
           </g>
 
-          <!-- contact point marker -->
+          <!-- contact point -->
           <circle
             cx="320"
             cy="350"
@@ -505,7 +586,6 @@
 
           <!-- friction arrow -->
           <line
-            id="frictionArrow"
             x1="315"
             y1="330"
             x2="235"
@@ -515,31 +595,16 @@
             stroke-linecap="round"/>
 
           <polygon
-            id="frictionHead"
             points="235,330 251,321 251,339"
             fill="#4f78a8"/>
 
-          <!-- rolling indicator -->
-          <path
-            id="rotationArrow"
-            d="M250 220 A82 82 0 0 1 285 190"
-            fill="none"
-            stroke="#5676a5"
-            stroke-width="4"
-            stroke-linecap="round"/>
-
-          <polygon
-            id="rotationHead"
-            points="285,190 271,193 279,204"
-            fill="#5676a5"/>
-
-          <!-- skid marks: hidden unless skidding -->
+          <!-- skid marks -->
           <g id="skidMarks" style="display:none;">
 
             <line
               x1="350"
               y1="346"
-              x2="455"
+              x2="480"
               y2="346"
               stroke="#555"
               stroke-width="5"
@@ -548,7 +613,7 @@
             <line
               x1="350"
               y1="355"
-              x2="455"
+              x2="480"
               y2="355"
               stroke="#555"
               stroke-width="5"
@@ -641,11 +706,11 @@
   const skidMarks =
     document.getElementById("skidMarks");
 
-  const rotationArrow =
-    document.getElementById("rotationArrow");
+  const wheelGroup =
+    document.getElementById("wheelGroup");
 
-  const rotationHead =
-    document.getElementById("rotationHead");
+  const roadMarkings =
+    document.getElementById("roadMarkings");
 
 
   const mass = 1000;
@@ -693,13 +758,9 @@
     const kinetic =
       muK * normal;
 
-
     /*
-      The slider represents requested braking force.
-
-      At 100%, the requested force is 10 kN.
-      This allows the threshold to be crossed
-      on each road surface.
+      At 100% braking demand,
+      the requested force is 10 kN.
     */
 
     const demandedForce =
@@ -720,37 +781,33 @@
 
 
     /*
-      Use a fixed 10 kN scale for every bar.
-
-      This means students can directly compare
-      bar lengths between conditions.
+      Fixed 10 kN scale.
     */
 
     const displayMax =
       10000;
 
-    const neededWidth =
+    neededBar.style.width =
       Math.min(
         demandedForce / displayMax * 100,
         100
-      );
+      ) + "%";
 
-    const staticWidth =
+    staticBar.style.width =
       Math.min(
         maxStatic / displayMax * 100,
         100
-      );
+      ) + "%";
 
-    const kineticWidth =
+    kineticBar.style.width =
       Math.min(
         kinetic / displayMax * 100,
         100
-      );
+      ) + "%";
 
 
     brakingOut.textContent =
       demandPercent.toFixed(0);
-
 
     neededValue.textContent =
       (demandedForce / 1000).toFixed(1) +
@@ -765,18 +822,8 @@
       " kN";
 
 
-    neededBar.style.width =
-      neededWidth + "%";
-
-    staticBar.style.width =
-      staticWidth + "%";
-
-    kineticBar.style.width =
-      kineticWidth + "%";
-
-
     /*
-      Display friction state.
+      VISUAL STATE
     */
 
     if (skidding) {
@@ -785,19 +832,30 @@
         "KINETIC FRICTION — WHEEL SKIDDING";
 
       statusText.textContent =
-        "The braking demand is greater than the maximum static friction. The tyre is now sliding across the road.";
+        "The braking demand is greater than the maximum static friction. The wheel has locked and the tyre is sliding across the road.";
 
       contactMessage.textContent =
-        "The tyre is sliding across the road, so the friction is kinetic.";
+        "The locked tyre slides across the road, so the friction is kinetic.";
+
+      /*
+        Locked wheel:
+        stop wheel rotation.
+      */
+
+      wheelGroup.classList.remove(
+        "wheel-rolling"
+      );
+
+      /*
+        Road moves beneath locked wheel.
+      */
+
+      roadMarkings.classList.add(
+        "road-moving"
+      );
 
       skidMarks.style.display =
         "block";
-
-      rotationArrow.style.display =
-        "none";
-
-      rotationHead.style.display =
-        "none";
 
     }
 
@@ -812,14 +870,16 @@
       contactMessage.textContent =
         "The tyre is still rolling without slipping, but it is close to losing grip.";
 
+      wheelGroup.classList.add(
+        "wheel-rolling"
+      );
+
+      roadMarkings.classList.remove(
+        "road-moving"
+      );
+
       skidMarks.style.display =
         "none";
-
-      rotationArrow.style.display =
-        "block";
-
-      rotationHead.style.display =
-        "block";
 
     }
 
@@ -834,21 +894,19 @@
       contactMessage.textContent =
         "The point of tyre in contact with the road is not sliding.";
 
+      wheelGroup.classList.add(
+        "wheel-rolling"
+      );
+
+      roadMarkings.classList.remove(
+        "road-moving"
+      );
+
       skidMarks.style.display =
         "none";
 
-      rotationArrow.style.display =
-        "block";
-
-      rotationHead.style.display =
-        "block";
-
     }
 
-
-    /*
-      Surface button state.
-    */
 
     buttons.forEach(button => {
 
