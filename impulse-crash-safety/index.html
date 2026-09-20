@@ -97,13 +97,14 @@
   }
 
   button {
-    min-height: 44px;
+    min-height: 48px;
     border: 1px solid #bbb;
     background: white;
-    padding: 11px 8px;
+    padding: 10px 8px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
+    line-height: 1.25;
   }
 
   button:hover {
@@ -163,7 +164,7 @@
   }
 
   .safety-item {
-    margin-top: 8px;
+    margin-top: 10px;
     line-height: 1.45;
     font-size: 0.92rem;
   }
@@ -203,8 +204,9 @@
     font-size: 1.2rem;
   }
 
-  #calcText {
-    margin-top: 8px;
+  #calcText,
+  #forceCalcText {
+    margin-top: 7px;
     color: #666;
   }
 
@@ -255,7 +257,9 @@
     <!-- CONTROLS -->
     <section class="panel">
 
-      <label for="mass">Occupant mass</label>
+      <label for="mass">
+        Occupant mass
+      </label>
 
       <input
         id="mass"
@@ -269,7 +273,9 @@
         <span id="massOut">70</span> kg
       </div>
 
-      <label for="speed">Initial speed</label>
+      <label for="speed">
+        Initial speed
+      </label>
 
       <input
         id="speed"
@@ -298,22 +304,29 @@
         </button>
 
         <button type="button" data-mode="airbag">
-          Airbag
+          Airbag /<br>crumple zone
         </button>
 
       </div>
 
+      <!-- RESULTS -->
       <div class="results">
 
         <div class="result">
-          <div class="result-label">Peak force</div>
-          <div id="peakOut" class="result-big">
-            33.0 kN
+          <div class="result-label">
+            Average force
+          </div>
+
+          <div id="forceOut" class="result-big">
+            21.0 kN
           </div>
         </div>
 
         <div class="result">
-          <div class="result-label">Impulse</div>
+          <div class="result-label">
+            Impulse
+          </div>
+
           <div id="impulseOut" class="result-big">
             1050 N·s
           </div>
@@ -325,6 +338,7 @@
         A rigid stop happens very quickly, so the force is large.
       </div>
 
+      <!-- SAFETY SUMMARY -->
       <div class="safety-note">
 
         <div class="safety-note-title">
@@ -351,15 +365,26 @@
       <div class="diagram">
 
         <svg
-          viewBox="0 0 700 420"
+          viewBox="0 0 700 425"
           role="img"
-          aria-label="Force-time graph showing a smooth collision pulse">
+          aria-label="Idealised force-time graph for a collision">
 
-          <!-- axis titles -->
+          <!-- GRAPH TITLE -->
           <text
-            x="28"
+            x="385"
+            y="28"
+            text-anchor="middle"
+            font-size="14"
+            font-weight="600"
+            fill="#202124">
+            Idealised force–time profile
+          </text>
+
+          <!-- Y AXIS TITLE -->
+          <text
+            x="27"
             y="205"
-            transform="rotate(-90 28 205)"
+            transform="rotate(-90 27 205)"
             text-anchor="middle"
             font-size="15"
             font-weight="600"
@@ -367,9 +392,10 @@
             Force (kN)
           </text>
 
+          <!-- X AXIS TITLE -->
           <text
-            x="390"
-            y="397"
+            x="385"
+            y="405"
             text-anchor="middle"
             font-size="15"
             font-weight="600"
@@ -377,7 +403,7 @@
             Time (s)
           </text>
 
-          <!-- axes -->
+          <!-- AXES -->
           <line
             x1="110"
             y1="345"
@@ -394,7 +420,7 @@
             stroke="#333"
             stroke-width="2"/>
 
-          <!-- horizontal grid -->
+          <!-- GRID -->
           <line
             x1="110"
             y1="272.5"
@@ -427,99 +453,49 @@
             stroke="#e3e3e3"
             stroke-width="1"/>
 
-          <!-- y tick labels -->
-          <text
-            x="94"
-            y="349"
-            text-anchor="end"
-            font-size="12"
-            fill="#666">
+          <!-- Y AXIS NUMBERS -->
+          <text x="94" y="349" text-anchor="end" font-size="12" fill="#666">
             0
           </text>
 
-          <text
-            x="94"
-            y="276.5"
-            text-anchor="end"
-            font-size="12"
-            fill="#666">
+          <text x="94" y="276.5" text-anchor="end" font-size="12" fill="#666">
             30
           </text>
 
-          <text
-            x="94"
-            y="204"
-            text-anchor="end"
-            font-size="12"
-            fill="#666">
+          <text x="94" y="204" text-anchor="end" font-size="12" fill="#666">
             60
           </text>
 
-          <text
-            x="94"
-            y="131.5"
-            text-anchor="end"
-            font-size="12"
-            fill="#666">
+          <text x="94" y="131.5" text-anchor="end" font-size="12" fill="#666">
             90
           </text>
 
-          <text
-            x="94"
-            y="59"
-            text-anchor="end"
-            font-size="12"
-            fill="#666">
+          <text x="94" y="59" text-anchor="end" font-size="12" fill="#666">
             120
           </text>
 
-          <!-- x tick labels -->
-          <text
-            x="110"
-            y="369"
-            text-anchor="middle"
-            font-size="12"
-            fill="#666">
+          <!-- X AXIS NUMBERS -->
+          <text x="110" y="370" text-anchor="middle" font-size="12" fill="#666">
             0
           </text>
 
-          <text
-            x="246.25"
-            y="369"
-            text-anchor="middle"
-            font-size="12"
-            fill="#666">
+          <text x="246.25" y="370" text-anchor="middle" font-size="12" fill="#666">
             0.1
           </text>
 
-          <text
-            x="382.5"
-            y="369"
-            text-anchor="middle"
-            font-size="12"
-            fill="#666">
+          <text x="382.5" y="370" text-anchor="middle" font-size="12" fill="#666">
             0.2
           </text>
 
-          <text
-            x="518.75"
-            y="369"
-            text-anchor="middle"
-            font-size="12"
-            fill="#666">
+          <text x="518.75" y="370" text-anchor="middle" font-size="12" fill="#666">
             0.3
           </text>
 
-          <text
-            x="655"
-            y="369"
-            text-anchor="middle"
-            font-size="12"
-            fill="#666">
+          <text x="655" y="370" text-anchor="middle" font-size="12" fill="#666">
             0.4
           </text>
 
-          <!-- pulse -->
+          <!-- DYNAMIC CURVE -->
           <path
             id="pulseFill"
             d=""
@@ -536,37 +512,31 @@
             stroke-linecap="round">
           </path>
 
-          <!-- fixed annotation -->
-          <text
-            x="390"
-            y="31"
-            text-anchor="middle"
-            font-size="13"
-            font-weight="600"
-            fill="#202124">
-            Peak force shown by curve height
-          </text>
-
         </svg>
 
       </div>
 
+      <!-- PHYSICS -->
       <div class="relationship">
 
         <div class="relationship-top">
 
           <span class="relationship-title">
-            Key idea
+            Key relationship
           </span>
 
           <span class="formula">
-            Impulse = Δp
+            F<sub>avg</sub> Δt = Δp
           </span>
 
         </div>
 
         <div id="calcText">
-          70 × 15 = 1050 N·s
+          Δp = 70 × 15 = 1050 N·s
+        </div>
+
+        <div id="forceCalcText">
+          Favg = 1050 ÷ 0.05 = 21.0 kN
         </div>
 
         <div class="key-point">
@@ -580,7 +550,7 @@
   </div>
 
   <div class="note">
-    The collision pulse is an idealised model. The occupant is assumed to come to rest.
+    The force–time curve is an idealised visual model. The occupant is assumed to come to rest.
   </div>
 
 </div>
@@ -600,8 +570,8 @@
   const speedOut =
     document.getElementById("speedOut");
 
-  const peakOut =
-    document.getElementById("peakOut");
+  const forceOut =
+    document.getElementById("forceOut");
 
   const impulseOut =
     document.getElementById("impulseOut");
@@ -612,6 +582,9 @@
   const calcText =
     document.getElementById("calcText");
 
+  const forceCalcText =
+    document.getElementById("forceCalcText");
+
   const pulseLine =
     document.getElementById("pulseLine");
 
@@ -621,8 +594,7 @@
   const buttons =
     [...document.querySelectorAll("[data-mode]")];
 
-  let mode =
-    "rigid";
+  let mode = "rigid";
 
   const modes = {
 
@@ -641,21 +613,33 @@
     airbag: {
       dt: 0.35,
       text:
-        "An airbag increases stopping time further, reducing the peak force even more."
+        "An airbag or crumple zone increases stopping time further, reducing the force even more."
     }
 
   };
+
+
+  /*
+    Fixed graph scale.
+
+    Maximum possible pulse:
+    mass = 120 kg
+    speed = 30 m/s
+    rigid stop = 0.05 s
+
+    The idealised half-sine pulse has a peak of
+    approximately 113 kN, so a 120 kN axis accommodates
+    every permitted combination without rescaling.
+  */
 
   const left = 110;
   const right = 655;
   const top = 55;
   const base = 345;
 
-  const maxTime =
-    0.40;
+  const maxTime = 0.40;
+  const maxForce = 120000;
 
-  const maxForce =
-    120000;
 
   function xScale(t) {
 
@@ -667,10 +651,14 @@
 
   }
 
+
   function yScale(force) {
 
     const clamped =
-      Math.min(force, maxForce);
+      Math.min(
+        Math.max(force, 0),
+        maxForce
+      );
 
     return (
       base -
@@ -680,13 +668,24 @@
 
   }
 
-  function makePulse(dt, peak) {
 
-    const steps =
-      120;
+  function makePulse(dt, impulse) {
 
-    let path =
-      "";
+    /*
+      A half-sine pulse is used only as an idealised
+      visual representation.
+
+      Its area is set equal to the impulse.
+    */
+
+    const peak =
+      Math.PI *
+      impulse /
+      (2 * dt);
+
+    const steps = 120;
+
+    let path = "";
 
     for (
       let i = 0;
@@ -722,6 +721,7 @@
 
   }
 
+
   function update() {
 
     const m =
@@ -733,18 +733,27 @@
     const dt =
       modes[mode].dt;
 
+    /*
+      Occupant comes to rest:
+
+      impulse = change in momentum = mv
+    */
+
     const impulse =
       m * v;
 
-    const peak =
-      Math.PI *
-      impulse /
-      (2 * dt);
+    const averageForce =
+      impulse / dt;
+
+
+    /*
+      Build idealised graph.
+    */
 
     const linePath =
       makePulse(
         dt,
-        peak
+        impulse
       );
 
     const endX =
@@ -762,14 +771,19 @@
       base +
       " Z";
 
+
+    /*
+      Update displayed values.
+    */
+
     massOut.textContent =
       m.toFixed(0);
 
     speedOut.textContent =
       v.toFixed(0);
 
-    peakOut.textContent =
-      (peak / 1000).toFixed(1) +
+    forceOut.textContent =
+      (averageForce / 1000).toFixed(1) +
       " kN";
 
     impulseOut.textContent =
@@ -779,13 +793,33 @@
     explanation.textContent =
       modes[mode].text;
 
+
+    /*
+      Calculation display.
+    */
+
     calcText.textContent =
+      "Δp = " +
       m.toFixed(0) +
       " × " +
       v.toFixed(0) +
       " = " +
       Math.round(impulse) +
       " N·s";
+
+    forceCalcText.textContent =
+      "Favg = " +
+      Math.round(impulse) +
+      " ÷ " +
+      dt.toFixed(2) +
+      " = " +
+      (averageForce / 1000).toFixed(1) +
+      " kN";
+
+
+    /*
+      Update graph.
+    */
 
     pulseLine.setAttribute(
       "d",
@@ -797,6 +831,11 @@
       fillPath
     );
 
+
+    /*
+      Highlight selected safety scenario.
+    */
+
     buttons.forEach(button => {
 
       button.classList.toggle(
@@ -807,6 +846,7 @@
     });
 
   }
+
 
   buttons.forEach(button => {
 
@@ -824,15 +864,18 @@
 
   });
 
+
   mass.addEventListener(
     "input",
     update
   );
 
+
   speed.addEventListener(
     "input",
     update
   );
+
 
   update();
 
