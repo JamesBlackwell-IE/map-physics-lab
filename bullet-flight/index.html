@@ -413,9 +413,10 @@
       <div class="visual-card">
 
         <svg
-          viewBox="0 0 760 520"
+          id="mainSvg"
+          viewBox="0 0 760 540"
           role="img"
-          aria-label="Animated projectile showing stable precession, growing instability and tumbling">
+          aria-label="Animated projectile showing spin, precession, nutation, growing instability and tumbling">
 
           <!-- TITLE -->
           <text
@@ -486,6 +487,33 @@
           </g>
 
 
+          <!-- SPIN LABEL -->
+          <g id="spinLabelGroup">
+
+            <path
+              d="M250 155
+                 A65 34 0 0 1 350 155"
+              fill="none"
+              stroke="#b05a4d"
+              stroke-width="3"/>
+
+            <polygon
+              points="350,155 336,148 339,163"
+              fill="#b05a4d"/>
+
+            <text
+              x="300"
+              y="132"
+              text-anchor="middle"
+              font-size="13"
+              font-weight="600"
+              fill="#b05a4d">
+              spin
+            </text>
+
+          </g>
+
+
           <!-- PROJECTILE -->
           <g
             id="projectile"
@@ -493,13 +521,14 @@
 
             <!-- longitudinal axis -->
             <line
-              x1="185"
+              x1="180"
               y1="245"
               x2="450"
               y2="245"
               stroke="#315f86"
               stroke-width="3"/>
 
+            <!-- projectile body -->
             <g transform="translate(300 245)">
 
               <path
@@ -514,21 +543,38 @@
                 stroke="#6f6243"
                 stroke-width="2"/>
 
-              <line
-                x1="-58"
-                y1="-25"
-                x2="-43"
-                y2="25"
-                stroke="#6f6243"
-                stroke-width="5"/>
+              <!-- animated spin bands -->
+              <g id="spinBands">
 
-              <line
-                x1="-22"
-                y1="-25"
-                x2="-7"
-                y2="25"
-                stroke="#6f6243"
-                stroke-width="5"/>
+                <line
+                  id="band1"
+                  x1="-62"
+                  y1="-24"
+                  x2="-48"
+                  y2="24"
+                  stroke="#6f6243"
+                  stroke-width="5"/>
+
+                <line
+                  id="band2"
+                  x1="-22"
+                  y1="-24"
+                  x2="-8"
+                  y2="24"
+                  stroke="#6f6243"
+                  stroke-width="5"/>
+
+                <line
+                  id="band3"
+                  x1="18"
+                  y1="-23"
+                  x2="31"
+                  y2="20"
+                  stroke="#6f6243"
+                  stroke-width="4"
+                  opacity="0.65"/>
+
+              </g>
 
             </g>
 
@@ -550,27 +596,38 @@
 
             <circle
               cx="640"
-              cy="410"
-              r="72"
+              cy="420"
+              r="76"
               fill="#fafafa"
               stroke="#ddd"
               stroke-width="2"/>
 
-            <!-- reference orbit -->
+            <!-- reference mean orbit -->
             <circle
               id="orbit"
               cx="640"
-              cy="410"
+              cy="420"
               r="46"
               fill="none"
               stroke="#aab4be"
               stroke-width="2"
               stroke-dasharray="6 6"/>
 
+            <!-- rosette trace -->
+            <polyline
+              id="traceLine"
+              points=""
+              fill="none"
+              stroke="#7c9ab9"
+              stroke-width="2.5"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              opacity="0.75"/>
+
             <!-- velocity direction -->
             <circle
               cx="640"
-              cy="410"
+              cy="420"
               r="5"
               fill="#555"/>
 
@@ -578,9 +635,9 @@
             <line
               id="axisLine"
               x1="640"
-              y1="410"
+              y1="420"
               x2="686"
-              y2="410"
+              y2="420"
               stroke="#315f86"
               stroke-width="4"
               stroke-linecap="round"/>
@@ -589,13 +646,13 @@
             <circle
               id="axisTip"
               cx="686"
-              cy="410"
+              cy="420"
               r="7"
               fill="#315f86"/>
 
             <text
               x="640"
-              y="502"
+              y="520"
               text-anchor="middle"
               font-size="11"
               fill="#666">
@@ -612,7 +669,7 @@
 
             <rect
               x="550"
-              y="365"
+              y="370"
               width="180"
               height="82"
               rx="12"
@@ -621,7 +678,7 @@
 
             <text
               x="640"
-              y="394"
+              y="399"
               text-anchor="middle"
               font-size="13"
               font-weight="700"
@@ -631,7 +688,7 @@
 
             <text
               x="640"
-              y="418"
+              y="423"
               text-anchor="middle"
               font-size="12"
               fill="#666">
@@ -640,7 +697,7 @@
 
             <text
               x="640"
-              y="436"
+              y="441"
               text-anchor="middle"
               font-size="12"
               fill="#666">
@@ -653,7 +710,7 @@
 
 
         <div class="visual-caption">
-          In the end-on view, the centre represents the direction of travel and the blue line represents the projectile's longitudinal axis.
+          The moving bands indicate spin. In the end-on view, the blue line is the projectile axis and its fading trace shows the combined precession–nutation path.
         </div>
 
       </div>
@@ -663,23 +720,27 @@
       <div class="concept-card">
 
         <div class="concept-title">
-          Stable flight can still involve angular motion
+          Separate the different motions
         </div>
 
         <p>
-          A stable spinning projectile does not need to point perfectly along its direction of travel. Small yaw, precession and nutation can remain bounded.
+          <strong>Spin</strong> is the rapid rotation of the projectile about its own longitudinal axis.
         </p>
 
         <p>
-          In the end-on view, precession appears as the projectile axis sweeping around the direction of travel. Nutation causes the distance from the centre to oscillate slightly.
+          <strong>Precession</strong> causes that longitudinal axis to sweep around the direction of travel. In the end-on view, this appears as the blue axis rotating around the centre.
         </p>
 
         <p>
-          In the unstable mode, the angular deviation progressively increases. Once nose-forward stability is lost, the projectile begins continuous end-over-end tumbling.
+          <strong>Nutation</strong> slightly changes the angular deviation during precession. This makes the axis tip move inward and outward, producing a rosette-like trace rather than a simple circle.
+        </p>
+
+        <p>
+          In the unstable mode, the angular deviation grows until nose-forward stability is lost and the projectile begins to tumble.
         </p>
 
         <div class="take-home">
-          Yaw, precession and nutation can occur during stable flight. The important distinction is whether the angular motion remains bounded or grows.
+          Spin is rotation about the projectile axis. Precession and nutation describe motion of that axis relative to the direction of travel.
         </div>
 
       </div>
@@ -690,7 +751,7 @@
 
 
   <div class="note">
-    This is a conceptual teaching animation rather than a quantitative external-ballistics model. The rates and angular motion are deliberately exaggerated for clarity.
+    This is a conceptual teaching animation rather than a quantitative external-ballistics model. Motion is deliberately exaggerated and slowed for clarity.
   </div>
 
 </div>
@@ -733,11 +794,17 @@
   const projectile =
     document.getElementById("projectile");
 
+  const spinLabelGroup =
+    document.getElementById("spinLabelGroup");
+
   const axisTip =
     document.getElementById("axisTip");
 
   const axisLine =
     document.getElementById("axisLine");
+
+  const traceLine =
+    document.getElementById("traceLine");
 
   const coneGroup =
     document.getElementById("coneGroup");
@@ -751,14 +818,20 @@
   const coneEnd =
     document.getElementById("coneEnd");
 
-  const orbit =
-    document.getElementById("orbit");
-
   const endOnGroup =
     document.getElementById("endOnGroup");
 
   const tumbleIndicator =
     document.getElementById("tumbleIndicator");
+
+  const band1 =
+    document.getElementById("band1");
+
+  const band2 =
+    document.getElementById("band2");
+
+  const band3 =
+    document.getElementById("band3");
 
 
   let stability = "stable";
@@ -772,17 +845,22 @@
 
 
   /*
+    Trace history.
+  */
+
+  let tracePoints = [];
+
+  let lastTraceTime = 0;
+
+
+  /*
     Deliberately slowed conceptual rates.
   */
 
   const precessionRate = 0.0010;
   const nutationRate = 0.0042;
+  const spinRate = 0.010;
 
-
-  /*
-    In unstable mode, angular deviation
-    grows gradually before tumbling begins.
-  */
 
   const tumbleStartSeconds = 8.0;
 
@@ -797,12 +875,28 @@
   }
 
 
+  function clearTrace() {
+
+    tracePoints = [];
+
+    traceLine.setAttribute(
+      "points",
+      ""
+    );
+
+  }
+
+
   function resetAnimation() {
 
     pausedElapsed = 0;
 
     startTime =
       performance.now();
+
+    lastTraceTime = 0;
+
+    clearTrace();
 
   }
 
@@ -857,11 +951,6 @@
     }
 
 
-    /*
-      Unstable:
-      smoothly increase angular deviation.
-    */
-
     const growth =
       smoothstep(
         seconds /
@@ -909,6 +998,147 @@
   }
 
 
+  function updateSpinBands(elapsed) {
+
+    /*
+      The bullet silhouette remains fixed.
+      Only the internal band pattern changes,
+      suggesting rapid axial rotation.
+    */
+
+    const phase =
+      Math.sin(
+        elapsed *
+        spinRate
+      );
+
+
+    const offset =
+      14 * phase;
+
+
+    band1.setAttribute(
+      "x1",
+      (-62 + offset).toFixed(1)
+    );
+
+    band1.setAttribute(
+      "x2",
+      (-48 - offset).toFixed(1)
+    );
+
+
+    band2.setAttribute(
+      "x1",
+      (-22 + offset).toFixed(1)
+    );
+
+    band2.setAttribute(
+      "x2",
+      (-8 - offset).toFixed(1)
+    );
+
+
+    band3.setAttribute(
+      "x1",
+      (18 + offset * 0.7).toFixed(1)
+    );
+
+    band3.setAttribute(
+      "x2",
+      (31 - offset * 0.7).toFixed(1)
+    );
+
+  }
+
+
+  function updateTrace(
+    x,
+    y,
+    elapsed
+  ) {
+
+    /*
+      Add points at a controlled interval,
+      not every animation frame.
+    */
+
+    if (
+      elapsed -
+      lastTraceTime >
+      45
+    ) {
+
+      tracePoints.push({
+        x: x,
+        y: y,
+        t: elapsed
+      });
+
+      lastTraceTime =
+        elapsed;
+
+    }
+
+
+    /*
+      Keep only roughly the last
+      five seconds of motion.
+    */
+
+    const traceWindow =
+      5000;
+
+
+    tracePoints =
+      tracePoints.filter(
+        p =>
+          elapsed - p.t <=
+          traceWindow
+      );
+
+
+    const pointsString =
+      tracePoints
+        .map(
+          p =>
+            p.x.toFixed(1) +
+            "," +
+            p.y.toFixed(1)
+        )
+        .join(" ");
+
+
+    traceLine.setAttribute(
+      "points",
+      pointsString
+    );
+
+
+    /*
+      Fade overall trace slightly when
+      there are relatively few points.
+    */
+
+    const opacity =
+      Math.min(
+        0.8,
+        tracePoints.length /
+        40
+      );
+
+
+    traceLine.setAttribute(
+      "opacity",
+      Math.max(
+        0.18,
+        opacity
+      ).toFixed(2)
+    );
+
+  }
+
+
   function draw(now) {
 
     const elapsed =
@@ -936,18 +1166,10 @@
         : 0;
 
 
-    /*
-      Precession phase.
-    */
-
     const phi =
       elapsed *
       precessionRate;
 
-
-    /*
-      Mean angular deviation.
-    */
 
     const envelope =
       yawEnvelope(
@@ -955,11 +1177,6 @@
         seconds
       );
 
-
-    /*
-      Nutation changes the cone angle
-      slightly around its mean value.
-    */
 
     const nutation =
       nutationAmplitude *
@@ -979,10 +1196,30 @@
 
     const tumbling =
       stability === "unstable" &&
-      seconds >= tumbleStartSeconds;
+      seconds >=
+      tumbleStartSeconds;
 
 
     let displayedAngle;
+
+
+    /*
+      Show axial spin while projectile
+      remains in normal nose-forward flight.
+    */
+
+    if (!tumbling) {
+
+      updateSpinBands(
+        elapsed
+      );
+
+      spinLabelGroup.setAttribute(
+        "opacity",
+        "1"
+      );
+
+    }
 
 
     /*
@@ -990,11 +1227,6 @@
     */
 
     if (!tumbling) {
-
-      /*
-        Side projection of the precessing
-        projectile axis.
-      */
 
       displayedAngle =
         instantaneousYaw *
@@ -1026,47 +1258,30 @@
 
 
       /*
-        Improved end-on view.
+        END-ON VIEW
 
-        Centre:
-        direction of travel.
+        Centre = velocity direction.
 
-        Blue line:
-        projectile longitudinal axis.
+        Radius is proportional to the
+        instantaneous yaw angle.
 
-        Precession:
-        line rotates around centre.
+        Precession changes angular position.
 
-        Nutation:
-        radial distance changes slightly.
+        Nutation changes radius, producing
+        the rosette-like trace.
       */
 
-      const referenceYaw =
-        Math.max(
-          envelope,
-          1
-        );
-
-
-      /*
-        Scale the axis length with yaw.
-
-        46 px represents the mean yaw
-        envelope. Nutation moves the tip
-        slightly inward and outward.
-      */
-
-      const radialRatio =
-        instantaneousYaw /
-        referenceYaw;
+      const yawScale =
+        2.2;
 
 
       const radius =
         Math.max(
-          8,
+          2,
           Math.min(
             64,
-            46 * radialRatio
+            instantaneousYaw *
+            yawScale
           )
         );
 
@@ -1077,7 +1292,7 @@
         Math.cos(phi);
 
       const orbitY =
-        410 +
+        420 +
         radius *
         Math.sin(phi);
 
@@ -1100,7 +1315,7 @@
 
       axisLine.setAttribute(
         "y1",
-        "410"
+        "420"
       );
 
       axisLine.setAttribute(
@@ -1114,14 +1329,10 @@
       );
 
 
-      /*
-        Reference circle shows the
-        approximate mean precession orbit.
-      */
-
-      orbit.setAttribute(
-        "r",
-        "46"
+      updateTrace(
+        orbitX,
+        orbitY,
+        elapsed
       );
 
 
@@ -1143,10 +1354,6 @@
         tumbleStartSeconds;
 
 
-      /*
-        Orientation reached at transition.
-      */
-
       const entryAngle =
         60 *
         Math.sin(
@@ -1157,7 +1364,8 @@
 
 
       /*
-        Continuous end-over-end rotation.
+        Continuous end-over-end rotation
+        around projectile centre.
       */
 
       const tumbleRate =
@@ -1178,26 +1386,31 @@
       );
 
 
-      /*
-        The precession cone and end-on view
-        become less meaningful after the
-        projectile has entered tumbling.
-      */
+      spinLabelGroup.setAttribute(
+        "opacity",
+        "0"
+      );
+
 
       coneGroup.setAttribute(
         "opacity",
         "0.12"
       );
 
+
       endOnGroup.setAttribute(
         "opacity",
         "0"
       );
 
+
       tumbleIndicator.setAttribute(
         "opacity",
         "1"
       );
+
+
+      clearTrace();
 
     }
 
@@ -1401,6 +1614,9 @@
         nutationOn
       );
 
+
+      clearTrace();
+
     }
   );
 
@@ -1433,6 +1649,9 @@
         Number(
           nutationSlider.value
         ).toFixed(1);
+
+
+      clearTrace();
 
     }
   );
