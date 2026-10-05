@@ -75,6 +75,16 @@
     box-shadow: 0 7px 20px rgba(0,0,0,0.06);
   }
 
+  .card:focus-visible {
+    outline: 3px solid #315f86;
+    outline-offset: 4px;
+  }
+
+  .ultrasound-section {
+    margin-top: 42px;
+    scroll-margin-top: 24px;
+  }
+
   .card.disabled {
     cursor: default;
   }
@@ -107,7 +117,8 @@
     line-height: 1;
   }
 
-  .card h2 {
+  .card h2,
+  .card h3 {
     margin: 0 0 10px;
     font-size: 1.3rem;
   }
@@ -239,29 +250,13 @@
 
 
     <!-- ULTRASOUND -->
-    <div class="card disabled">
-
-      <div class="tag planned">
-        Planned
-      </div>
-
-      <div class="icon">
-        〰️
-      </div>
-
-      <h2>
-        Ultrasound
-      </h2>
-
-      <p>
-        Wave propagation, frequency, wavelength, acoustic impedance, reflection, attenuation and Doppler ultrasound.
-      </p>
-
-      <div class="planned-text">
-        Interactive simulations coming soon
-      </div>
-
-    </div>
+    <a class="card" href="#ultrasound">
+      <div class="tag">3 simulations</div>
+      <div class="icon" aria-hidden="true">〰️</div>
+      <h2>Ultrasound</h2>
+      <p>Explore axial, lateral and elevational resolution, phased-array steering and focusing, and the compromise between frequency, penetration and resolution.</p>
+      <div class="open">Explore ultrasound →</div>
+    </a>
 
 
     <!-- LASERS -->
@@ -291,6 +286,34 @@
 
 
   </div>
+
+
+  <section id="ultrasound" class="ultrasound-section" aria-labelledby="ultrasound-title">
+    <h2 class="section-title" id="ultrasound-title">Ultrasound simulations</h2>
+    <div class="grid">
+      <a class="card" href="ultrasound-resolution.html">
+        <div class="tag">MAP 7</div>
+        <div class="icon" aria-hidden="true">↔️</div>
+        <h3>Types of resolution</h3>
+        <p>Compare axial, lateral and elevational resolution. Change target separation, pulse length, beam width and slice thickness to see which echoes the scanner can distinguish.</p>
+        <div class="open">Explore resolution →</div>
+      </a>
+      <a class="card" href="ultrasound-phased-array.html">
+        <div class="tag">MAP 8</div>
+        <div class="icon" aria-hidden="true">〰️</div>
+        <h3>Phased arrays</h3>
+        <p>Watch how element firing delays steer and focus an ultrasound beam. Compare simultaneous firing, progressive delays and the timing needed to bring waves together at a focus.</p>
+        <div class="open">Explore phased arrays →</div>
+      </a>
+      <a class="card" href="ultrasound-frequency.html">
+        <div class="tag">MAP 7</div>
+        <div class="icon" aria-hidden="true">∿</div>
+        <h3>Frequency and penetration</h3>
+        <p>Adjust frequency and target depth to explore the compromise between axial resolution and returning echo strength. See why targets can merge or become too faint to display.</p>
+        <div class="open">Explore frequency →</div>
+      </a>
+    </div>
+  </section>
 
 
   <section class="about">
